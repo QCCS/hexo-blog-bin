@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>qianchaochushui</title>
+  <meta name="description" content="weichat:qianchaochushui">
+  <meta name="keywords" content="Node javascript CSS React Vue">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="shortcut icon" href="/">
+  <link rel="alternate" href="/atom.xml" title="qianchaochushui">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="影响企业应用前端开发效率的因素原先是在知乎上回答一个问题的，整理了放这里： 我们来分析一下究竟哪些因素让企业应用的前端开发这么困扰。 先看看界面部分吧。 #1. 命令式还是声明式毫无疑问，就写界面来说，声明式的代码编写效率远高于命令式： &amp;lt;Panel title=&amp;quot;Test&amp;quot;&amp;gt;   &amp;lt;Button label=&amp;quot;Click me&amp;quot;/&amp;gt;">
+<meta name="keywords" content="Node javascript CSS React Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="qianchaochushui">
+<meta property="og:url" content="https://qccs.github.io/2019/04/13/杂谈/2014-01-06-影响企业应用前端开发效率的因素/index.html">
+<meta property="og:site_name" content="qianchaochushui">
+<meta property="og:description" content="影响企业应用前端开发效率的因素原先是在知乎上回答一个问题的，整理了放这里： 我们来分析一下究竟哪些因素让企业应用的前端开发这么困扰。 先看看界面部分吧。 #1. 命令式还是声明式毫无疑问，就写界面来说，声明式的代码编写效率远高于命令式： &amp;lt;Panel title=&amp;quot;Test&amp;quot;&amp;gt;   &amp;lt;Button label=&amp;quot;Click me&amp;quot;/&amp;gt;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-13T07:28:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="qianchaochushui">
+<meta name="twitter:description" content="影响企业应用前端开发效率的因素原先是在知乎上回答一个问题的，整理了放这里： 我们来分析一下究竟哪些因素让企业应用的前端开发这么困扰。 先看看界面部分吧。 #1. 命令式还是声明式毫无疑问，就写界面来说，声明式的代码编写效率远高于命令式： &amp;lt;Panel title=&amp;quot;Test&amp;quot;&amp;gt;   &amp;lt;Button label=&amp;quot;Click me&amp;quot;/&amp;gt;">
+    
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+  <link href="//cdn.bootcss.com/node-waves/0.7.5/waves.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+</head>
+</html>
+<body>
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+
+  <script>setLoadingBarProgress(20)</script> 
+  <header class="l_header">
+	<div class="wrapper">
+		<div class="nav-main container container--flex">
+			<a class="logo flat-box" href="/">
+				qianchaochushui
+			</a>
+			<div class="menu">
+				<ul class="h-list">
+					
+						<li>
+							<a class="flat-box nav-home" href="/">
+								首页
+							</a>
+						</li>
+					
+						<li>
+							<a class="flat-box nav-archives" href="/archives">
+								存档
+							</a>
+						</li>
+					
+						<li>
+							<a class="flat-box nav-categories" href="/categories">
+								分类
+							</a>
+						</li>
+					
+						<li>
+							<a class="flat-box nav-tags" href="/tags">
+								标签
+							</a>
+						</li>
+					
+						<li>
+							<a class="flat-box nav-about" href="/about">
+								关于
+							</a>
+						</li>
+					
+				</ul>
+				<div class="underline"></div>
+			</div>
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索">
+						<span class="icon icon-search"></span>
+					</form>
+				</div>
+			
+			<ul class="switcher h-list">
+				
+					<li class="s-search"><a href="javascript:void(0)"><span class="icon icon-search flat-box"></span></a></li>
+				
+				<li class="s-menu"><a href="javascript:void(0)"><span class="icon icon-menu flat-box"></span></a></li>
+			</ul>
+		</div>
+		
+		<div class="nav-sub container container--flex">
+			<a class="logo" href="javascript:void(0)">
+				Word of Forks
+			</a>
+
+			<ul class="switcher h-list">
+				<li class="s-comment"><a href="javascript:void(0)"><span class="icon icon-chat_bubble_outline flat-box"></span></a></li>
+				<li class="s-top"><a href="javascript:void(0)"><span class="icon icon-arrow_upward flat-box"></span></a></li>
+				<li class="s-toc"><a href="javascript:void(0)"><span class="icon icon-format_list_numbered flat-box"></span></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<aside class="menu-phone">
+	<nav>
+		
+			<a href="/" class="nav-home nav">
+				首页
+			</a>
+		
+			<a href="/archives" class="nav-archives nav">
+				存档
+			</a>
+		
+			<a href="/categories" class="nav-categories nav">
+				分类
+			</a>
+		
+			<a href="/tags" class="nav-tags nav">
+				标签
+			</a>
+		
+			<a href="/about" class="nav-about nav">
+				关于
+			</a>
+		
+	</nav>
+</aside>
+
+    <script>setLoadingBarProgress(40);</script>
+  <div class="l_body">
+    <div class='container clearfix'>
+      <div class='l_main'>
+        <article id="post-杂谈/2014-01-06-影响企业应用前端开发效率的因素" class="post white-box article-type-post" itemscope itemprop="blogPost">
+	<section class="meta">
+	<h2 class="title">
+  	<a href="/2019/04/13/杂谈/2014-01-06-影响企业应用前端开发效率的因素/">
+    	
+    </a>
+  </h2>
+	<time>
+	  4月 13, 2019
+	</time>
+	
+	</section>
+	
+		<section class="toc-wrapper"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#影响企业应用前端开发效率的因素"><span class="toc-number">1.</span> <span class="toc-text">影响企业应用前端开发效率的因素</span></a></li></ol></section>
+	
+	<section class="article typo">
+  	<div class="article-entry" itemprop="articleBody">
+    	<h1 id="影响企业应用前端开发效率的因素"><a href="#影响企业应用前端开发效率的因素" class="headerlink" title="影响企业应用前端开发效率的因素"></a>影响企业应用前端开发效率的因素</h1><p>原先是在知乎上回答一个<a href="http://www.zhihu.com/question/22426434/answer/21433867" target="_blank" rel="noopener">问题</a>的，整理了放这里：</p>
+<p>我们来分析一下究竟哪些因素让企业应用的前端开发这么困扰。</p>
+<p>先看看界面部分吧。</p>
+<p>#1. 命令式还是声明式<br>毫无疑问，就写界面来说，声明式的代码编写效率远高于命令式：</p>
+<pre><code>&lt;Panel title=&quot;Test&quot;&gt;
+  &lt;Button label=&quot;Click me&quot;/&gt;
+&lt;/Panel&gt;
+
+Panel p = new Panel();
+p.title = &quot;Test&quot;;
+Button b = new Button();
+b.label = &quot;Click me&quot;;
+p.add(b);
+</code></pre><p>第一种容易写，容易理解。<br><a id="more"></a></p>
+<p>#2. 控件标签集<br>不管你的软件面向什么行业，至少都要一些控件，或者是基本的表单输入，或者是复杂的比如树形表格，里面还可以跨行跨列渲染的。</p>
+<p>如果我们有一套映射到控件的标签，那么写代码是肯定会简单很多的，比如说，在HTML里面没有原生的Panel，那么，刚才第一段代码可能就要变成：</p>
+<pre><code>&lt;div class=&quot;panel panel-default&quot;&gt;
+  &lt;div class=&quot;panel-heading&quot;&gt;
+    &lt;h3 class=&quot;panel-title&quot;&gt;Simple HTML Loader&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel-body&quot;&gt;
+    &lt;button&gt;Click me&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre><p>我们为了使得界面代码编写更高效，毫无疑问会倾向于把这么一堆东西简化成一个Panel标签，这样就会逐步建立一套面向自己行业的标签集。</p>
+<p>#3. 带逻辑的控件<br>刚才这个例子为什么简单呢，因为它只是一个普通容器，静态的，不带逻辑，所以即使你用什么静态模板也能解决问题。如果复杂一点，是一个TabNavigator，就要考虑切换的事件，再复杂一些是个树形表格，那就更麻烦了。</p>
+<p>我们来看jQuery提供的插件方式实现TabNaviator：</p>
+<pre><code>&lt;div id=&quot;tabs&quot;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#tabs-1&quot;&gt;Nunc tincidunt&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#tabs-2&quot;&gt;Proin dolor&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#tabs-3&quot;&gt;Aenean lacinia&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div id=&quot;tabs-1&quot;&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;tabs-2&quot;&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;tabs-3&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+  &lt;script&gt;
+  $(function() {
+    $( &quot;#tabs&quot; ).tabs();
+  });
+  &lt;/script&gt;
+</code></pre><p>从我个人的角度看，这种代码很愚蠢。蠢在何处呢？HTML这类声明式的界面描述语言，写起来本来应当直观一些的，但是被这么一搞，又往命令式的方向去了。而且两种东西混杂，声明和渲染居然分了两处，又增加了维护的成本。</p>
+<p>难道就没有别的办法来解决这个问题吗？</p>
+<p>我们看看其他语言和框架，比如Flex和Silverlight。</p>
+<pre><code>&lt;mx:TabNavigator id=&quot;tn&quot;  width=&quot;100%&quot; height=&quot;100%&quot;&gt;
+  &lt;!-- Define each panel using a VBox container. --&gt;
+  &lt;mx:VBox label=&quot;Panel 1&quot;&gt;
+    &lt;mx:Label text=&quot;TabNavigator container panel 1&quot;/&gt;
+  &lt;/mx:VBox&gt;
+
+  &lt;mx:VBox label=&quot;Panel 2&quot;&gt;
+    &lt;mx:Label text=&quot;TabNavigator container panel 2&quot;/&gt;
+  &lt;/mx:VBox&gt;
+
+  &lt;mx:VBox label=&quot;Panel 3&quot;&gt;
+    &lt;mx:Label text=&quot;TabNavigator container panel 3&quot;/&gt;
+  &lt;/mx:VBox&gt;
+&lt;/mx:TabNavigator&gt;
+</code></pre><p>上面这段是Flex里面的TabNavigator，在这个链接底部有运行结果：TabNavigator</p>
+<p>为什么它可以看不到逻辑的代码，但是又确实能有动作呢，因为它的实现类是mx.containers.TabNavigator，在这个代码里，可以自己手动去处理一切内部实现，但是暴露给业务开发人员的就是这么简单的标签。</p>
+<p>我们看看在HTML和JS这个体系里用什么办法去解决。不要提JSF这类服务端技术，因为它的思路也是不好的，展示代码的生成和渲染都不在一个地方，会有很多问题。</p>
+<p>#4. Polymer与Angular</p>
+<p>早期IE里有HTC，也就是HTML Components，因为别的浏览器厂商不喜欢，所以快要消亡了。在W3C新的HTML规范里，有一个Web Components，参见这里：Introduction to Web Components</p>
+<p>这个东西跟HTC的思想本出同源，它引入了Custom Elements和Shadow DOM这两个概念，也就是说，我可以自定义一个标签，然后在内部随便怎么折腾，用这个标签的人可以很方便。</p>
+<p>很美好，是不是，但是只适用于比较新的浏览器，基于这个理念架构的框架Polymer的目标也只是支持一些比较新的浏览器。Polymer</p>
+<p>那么怎么办呢？我们还有Angular，它也可以自定义标签，然后用directive的方式写内部实现。</p>
+<pre><code>&lt;tabs&gt;
+  &lt;pane title=&quot;Localization&quot;&gt;
+  &lt;/pane&gt;
+  &lt;pane title=&quot;Pluralization&quot;&gt;
+  &lt;/pane&gt;
+&lt;/tabs&gt;
+
+&lt;script id=&quot;components.js&quot;&gt;
+  angular.module(&apos;components&apos;, [])
+
+    .directive(&apos;tabs&apos;, function() {
+      return {
+        restrict: &apos;E&apos;,
+        transclude: true,
+        scope: {},
+        controller: function($scope, $element) {
+          var panes = $scope.panes = [];
+
+          $scope.select = function(pane) {
+            angular.forEach(panes, function(pane) {
+              pane.selected = false;
+            });
+            pane.selected = true;
+          }
+
+          this.addPane = function(pane) {
+            if (panes.length == 0) $scope.select(pane);
+            panes.push(pane);
+          }
+        },
+        template:
+          &apos;&lt;div class=&quot;tabbable&quot;&gt;&apos; +
+            &apos;&lt;ul class=&quot;nav nav-tabs&quot;&gt;&apos; +
+              &apos;&lt;li ng-repeat=&quot;pane in panes&quot; ng-class=&quot;{active:pane.selected}&quot;&gt;&apos;+
+                &apos;&lt;a href=&quot;&quot; ng-click=&quot;select(pane)&quot;&gt;{{pane.title}}&lt;/a&gt;&apos; +
+              &apos;&lt;/li&gt;&apos; +
+            &apos;&lt;/ul&gt;&apos; +
+            &apos;&lt;div class=&quot;tab-content&quot; ng-transclude&gt;&lt;/div&gt;&apos; +
+          &apos;&lt;/div&gt;&apos;,
+        replace: true
+      };
+    })
+
+    .directive(&apos;pane&apos;, function() {
+      return {
+        require: &apos;^tabs&apos;,
+        restrict: &apos;E&apos;,
+        transclude: true,
+        scope: { title: &apos;@&apos; },
+        link: function(scope, element, attrs, tabsCtrl) {
+          tabsCtrl.addPane(scope);
+        },
+        template:
+          &apos;&lt;div class=&quot;tab-pane&quot; ng-class=&quot;{active: selected}&quot; ng-transclude&gt;&apos; +
+          &apos;&lt;/div&gt;&apos;,
+        replace: true
+      };
+    })
+&lt;/script&gt;
+</code></pre><p>这么一来，也就有些接近我们的目标了，看到现在，我们还记得目标是什么吗？是尽可能精简的面向领域的容器和控件标签集，有了这个，写界面代码才能更简单。</p>
+<p>#5. 为什么HTML默认标签集这么小</p>
+<p>事情结束了吗？没有呢。我们的HTML体系为什么标签集这么小？因为他要解决的是通用领域的东西，怎样才能通用呢？要的是尽可能无歧义。</p>
+<p>怎样的东西会没有歧义？那就是它的含义尽可能少，比如说单行文本输入框，总没人对它有歧义吧，它无非就是可以设置最大最小长度，是否只读，是否禁用，最多通过某种规则来限制输入字符，最多最多，也就这些可做的了，大家都认同。</p>
+<p>Button就不同了，一开始他是</p>
+<pre><code>&lt;input type=&quot;button&quot; value=&quot;Click&quot;/&gt;
+</code></pre><p>后来大家想要各种各样的button，于是开放了</p>
+<pre><code>&lt;button&gt;&lt;/button&gt;
+</code></pre><p>这样的标签，可以在里面写各种HTML，我记得当时很多人在中间加上下和左右两层marquee，简直玩坏了。</p>
+<p>现在HTML里面又有了数字输入，日期时间输入这样的东西，数字的没什么疑问，就是最大最小值，步进值等等，日期时间这个就复杂了，它怎么做，都有人不满意。有人要日期排左边，有人要时间排上面，有人只要年和月，有人只要分和秒。有人要点空白表示选中，有人要双击日期表示选中，还有人想用农历、波斯历、尼泊尔历，简直没完了，还不如不做，谁要谁自己做……</p>
+<p>所以，面向各领域的人们，自己动手，丰衣足食吧。</p>
+<p>#6. 界面修饰</p>
+<p>好了，控件集的问题解决了，我们来看看界面的修饰。</p>
+<p>你们发现没有，不管用什么非HTML的标签体系，可能写代码会很快，但是有时候要修饰界面，比如只是调整一下所有容器的边距，某些按钮的圆角之类，就会生不如死。</p>
+<p>这时候你会发现，HTML里面的CSS真是神器，什么都能干，而且是面向切面的，只要你的HTML结构是良好的，完全不需要调整这个层面的代码。为什么其他体系的CSS没有这么强呢？比如说Flex也可以写CSS，QT也可以写CSS。</p>
+<p>因为CSS的部分实在是太复杂了，复杂到整个浏览器里面绝大部分的代码都在处理这方面的东西，像Google的Chrome团队有1000多人，别的体系没法有这么大投入，只能看着羡慕。</p>
+<p>上次看到一个问题，近30年来软件开发体系有哪些本质的改进？我觉得CSS真的可以入选，这是一个把结构和展现完全分离的典范，并且实现得很好。</p>
+<p>我们的前端开发一般都是面向某个领域的，不管什么领域，CSS方向都可以有一个很独立的规划，因为它可以不影响界面的结构。所以这个方面，其实不太会对前端开发造成太多压力，压力只集中在维护CSS的人群身上。</p>
+<p>好了，上面扯了那么多，其实到现在还在界面的层次，一直没有去谈到真正的逻辑。那么，最让我们困扰的部分是哪里呢？</p>
+<p>#7. 模块化和加载</p>
+<p>Web前端开发有个最苦闷的事情就是选型，因为HTML这个体系很开放，提供的默认能力又不是很足够，如果要做复杂交互的东西，会需要很多额外的工作。有各种框架从各种角度来解决问题，但怎么把这些东西整合到正好符合自己的需要，是一个很花精力的事情，很多时候恨不得自己把全部轮子都造一遍。</p>
+<p>真正的开发工作中，跨浏览器，踩各种坑应该是最烦闷的事，其他部分，如果有做好自己领域里标签的定义，或者不用标签用其他方式，应该不算特别困难。<br>有人说JavaScript语言本身比较松散，所以写业务逻辑比较头疼，这不算大问题。基于B/S的开发，有一个大坑是你在运行的时候要先把代码加载过来，然后才能跑。你看那些C/S软件，有这困扰吗？再看看后端程序员，谁还要关心自己的代码执行之前要做的事情？</p>
+<p>所以后端程序员写前端代码，都情不自禁地会引入一大堆库。我们形象一点来描述一下这个过程：</p>
+<p>嗯，大家都用jQuery，我也引入，抄了两段代码发现真不错。咦，我要个树控件，网上逛了一圈，拿了个zTree回来。再埋头苦干半个小时，缺数据表格控件，于是过了一会，jQuery UI被整体引入了。再埋头苦干，上网乱点了点，浏览器跳出个广告，一看叫做Kendo UI，看看发现不错，引进来再说，用里面的某个控件。又过了一阵，听说最近Angular很火啊，看了看例子，表单功能怎么那么强，我也要用！捣鼓捣鼓又加进去了。项目里又要用图表库，看了半天眼睛都花了，百度的ECharts不错哦，引进来。哎呀我界面怎么那么丑，人家的怎么那么清爽，查看源码，一看，Bootstrap，去官网一看，真乃神器，不用简直对不起自己。</p>
+<p>没多久之后，这个界面已经融合了各种主流框架，代码写法五花八门，依赖了几M的JS库，更要命的是里面某些JS有冲突，某些样式也互相覆盖，快疯了。</p>
+<p>这里有哪些问题呢？</p>
+<ul>
+<li>JS代码要先加载到界面才能执行，而这么几M的代码加载过来就要好久了，然后每个框架还要把自己初始化，又耗不少时间，半分钟之后自己写的JS才开始执行，用户等得都快怀孕了。</li>
+<li>不管是JS还是CSS，都应当控制基准的代码，这件事的主要意义是避免冲突，因为整个体系都比较松散，如果不加控制，就会造成冲突。即使在服务端写Java，也有类签名一致性之类的问题，所以这个部分必须要重视。</li>
+</ul>
+<p>刚才这两点，第二点暂时不是我们要探讨的范围，第一点，引出的话题就是异步加载，这是一个可以展开说很多的话题，也不再说了。异步加载和缓存是面对复杂场景必做的优化措施。</p>
+<p>但是这个里面规范就有好几种，具体实现方式就更多了。ES6的module也许可以解决这个问题。harmony:modules [ES Wiki]</p>
+<p>#8. 逻辑的分层</p>
+<p>网站型和应用型Web程序对分层的需求是不一样的。网站型的逻辑大部分都在处理UI，而应用型可能有很多业务逻辑，这部分需要更好的组织，以便复用，或者即使我们的目标不包括复用，为了这个代码的可维护性，也需要有比较好的组织方式。</p>
+<p>本质上这些组织方式与传统的客户端软件开发没什么不同，主要要做的无非就是UI层的隔离，或者模板化，或者别的什么方式。纯逻辑的代码大家都会写，但这个逻辑怎么跟界面产生关系，这是个问题。</p>
+<p>有些框架通过在HTML元素上设置额外属性，然后启动的时候读取，在框架内部做一些相关的事情，比如Angular、Avalon和Knockout。有的框架在视图层中让开发人员手动去处理界面，就像未引入框架的那样，比如Backbone，两者是各有利弊的。</p>
+<p>前面这种，一般功能是会很强大，但是它自身所做的东西必须足够多，多得帮你做掉绝大部分本来该自己做的事，你才会特别爽。所以，用这类框架来做表单型应用的时候，是会非常舒服的，因为这些需求他做框架的时候能预见，所以比如校验、联动、存取之类的都会处理掉。假如你要做一个绘图类应用，这就麻烦了，不管你是用Canvas还是SVG，它所能帮到的都不多。这时候，后面这类可能反而适合一些。</p>
+<p>这些数据分层框架的原理是什么呢？是要做一层表单与数据的对应关系，所以他要检测数据的变动，比如一个Object，它某个值变更了，要去把对应的界面更改之类。这里面也有很多的坑，可以一步一步踩过来。。。</p>
+<p>到现在，我大致可以回答你的问题，什么情况下前端开发会比较轻松呢？</p>
+<ul>
+<li>针对自己领域的界面标签库比较完善，或者易于扩展</li>
+<li>样式容易调整，并且独立于界面元素</li>
+<li>逻辑模块化，层次分明，在某种统一规范上存在大量可用库<br>咦，我这三点好像在说微软的WPF体系吗？</li>
+</ul>
+
+  	</div>
+	  
+		
+	
+		<div class="art-item-footer">
+				
+					<span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="/2019/04/13/杂谈/2013-07-10-从零开始编写自己的JavaScript框架（二）/" rel="prev" title>
+						 
+					</a></span>
+				
+				
+					<span class="art-item-right">next：<a href="/2019/04/13/杂谈/2014-04-27-基于AngularJS的企业软件前端架构/" rel="next" title>
+						
+					</a><i class="icon icon-chevron-thin-right"></i></span>
+				
+		</div>
+	
+	</section>
+	
+</article>
+<script>
+	window.subData = {
+		title: '',
+		tools: true
+	}
+</script>
+
+      </div>
+      <aside class='l_side'>
+        
+  <section class="m_widget about">
+
+<img class="avatar waves-image" src="https://avatars3.githubusercontent.com/u/13073380?s=460&amp;v=4">
+
+<div class="header">zhouli</div>
+<div class="content">
+<div class="desc">weichat:qianchaochushui</div>
+</div>
+</section>
+
+  <section class="m_widget links">
+<div class="header">友情链接</div>
+<div class="content">
+    <ul class="entry">
+    
+        <li><a class="flat-box" target="_blank" href="https://finance.json119.com">
+            <div class="name">finance</div>
+        </a></li>
+    
+        <li><a class="flat-box" target="_blank" href="https://json119.com/">
+            <div class="name">json119</div>
+        </a></li>
+    
+    </ul>
+</div>
+</section>
+
+  <section class="m_widget categories">
+<div class="header">分类</div>
+<div class="content">
+    
+    <ul class="entry">
+    
+        <li><a class="flat-box" href="/categories/Bootstrap/"><div class="name">Bootstrap</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/CSS/"><div class="name">CSS</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/GitHub/"><div class="name">GitHub</div><div class="badget">2</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/HTML-CSS/"><div class="name">HTML CSS</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/Interview/"><div class="name">Interview</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/JavaScript/"><div class="name">JavaScript</div><div class="badget">22</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/Sublime/"><div class="name">Sublime</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/Tools/"><div class="name">Tools</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/css1/"><div class="name">css1</div><div class="badget">0</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/jekyll/"><div class="name">jekyll</div><div class="badget">2</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/js/"><div class="name">js</div><div class="badget">0</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/js1/"><div class="name">js1</div><div class="badget">0</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/mysql1/"><div class="name">mysql1</div><div class="badget">0</div></a></li>
+    
+    </ul>
+    
+</div>
+</section>
+
+  
+<div class="m_widget tagcloud">
+    <div class="header">标签</div>
+    <div class="content">
+        <a href="/tags/Baidu-ife-HTML-CSS-task/" style="font-size: 14px; color: #808080">Baidu ife HTML CSS task</a> <a href="/tags/Baidu-ife-JavaScript-正则-Regular/" style="font-size: 14px; color: #808080">Baidu ife JavaScript 正则 Regular</a> <a href="/tags/BootStrap-HTML-CSS-Zhihu/" style="font-size: 14px; color: #808080">BootStrap HTML CSS Zhihu</a> <a href="/tags/ES2015-ES6-ES5-babel/" style="font-size: 14px; color: #808080">ES2015 ES6 ES5 babel</a> <a href="/tags/Git-GitHub-分支/" style="font-size: 14px; color: #808080">Git GitHub 分支</a> <a href="/tags/GitHub-同步-fork/" style="font-size: 14px; color: #808080">GitHub 同步 fork</a> <a href="/tags/IE-CSS-兼容性-HTML/" style="font-size: 14px; color: #808080">IE CSS 兼容性 HTML</a> <a href="/tags/JavaScript-Ajax-URL-HistoryApi-pushState-pjax/" style="font-size: 14px; color: #808080">JavaScript Ajax URL HistoryApi pushState pjax</a> <a href="/tags/JavaScript-Array-算法-慕课网/" style="font-size: 14px; color: #808080">JavaScript Array 算法 慕课网</a> <a href="/tags/JavaScript-HTML-CSS-Sass-移动端-XSS-AMD-requireJS-CommonJS-性能优化-WebApp/" style="font-size: 14px; color: #808080">JavaScript HTML CSS Sass 移动端 XSS AMD requireJS CommonJS 性能优化 WebApp</a> <a href="/tags/JavaScript-HTML-CSS-思维导图-技能树/" style="font-size: 14px; color: #808080">JavaScript HTML CSS 思维导图 技能树</a> <a href="/tags/JavaScript-作用域-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 作用域 慕课网 ife</a> <a href="/tags/JavaScript-函数-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 函数 慕课网 ife</a> <a href="/tags/JavaScript-慕课网-this-ife/" style="font-size: 14px; color: #808080">JavaScript 慕课网 this ife</a> <a href="/tags/JavaScript-闭包-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 闭包 慕课网 ife</a> <a href="/tags/JavaScript-面向对象-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 面向对象 慕课网 ife</a> <a href="/tags/Sublime-jshint-csslint/" style="font-size: 14px; color: #808080">Sublime jshint csslint</a> <a href="/tags/Weinre-WebApp-调试工具-JavaScript-HTML-CSS/" style="font-size: 14px; color: #808080">Weinre WebApp 调试工具 JavaScript HTML CSS</a> <a href="/tags/countdown-JavaScript/" style="font-size: 14px; color: #808080">countdown JavaScript</a> <a href="/tags/jekyll-RubyGems/" style="font-size: 14px; color: #808080">jekyll RubyGems</a> <a href="/tags/jekyll-端口-markdown-Foxit-RubyGems-HTML-CSS/" style="font-size: 14px; color: #808080">jekyll 端口 markdown Foxit RubyGems HTML CSS</a> <a href="/tags/tools-CSS-reveal-配色/" style="font-size: 14px; color: #808080">tools CSS reveal 配色</a> <a href="/tags/函数-JavaScript/" style="font-size: 14px; color: #808080">函数 JavaScript</a> <a href="/tags/动画-CSS-airbnb-lottie-JavaScript/" style="font-size: 14px; color: #808080">动画 CSS airbnb lottie JavaScript</a> <a href="/tags/动画-手势/" style="font-size: 14px; color: #808080">动画 手势</a> <a href="/tags/对象-函数-this-闭包-面向对象-作用域/" style="font-size: 14px; color: #808080">对象 函数 this 闭包 面向对象 作用域</a> <a href="/tags/效率-vscode-markdown/" style="font-size: 14px; color: #808080">效率 vscode markdown</a> <a href="/tags/文件-下载-JavaScript/" style="font-size: 14px; color: #808080">文件 下载 JavaScript</a> <a href="/tags/正则-分组-Regular/" style="font-size: 14px; color: #808080">正则 分组 Regular</a> <a href="/tags/算法-shuffle-乱序-洗牌/" style="font-size: 14px; color: #808080">算法 shuffle 乱序 洗牌</a> <a href="/tags/继承-对象-原型-Array-正则/" style="font-size: 14px; color: #808080">继承 对象 原型 Array 正则</a> <a href="/tags/面试-Lenovo-实习-JavaScript/" style="font-size: 14px; color: #808080">面试 Lenovo 实习 JavaScript</a>
+    </div>
+</div>
+
+
+
+      </aside>
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+  </div>
+  <footer id="footer" class="clearfix">
+
+	<div class="social-wrapper">
+  	
+      
+        <a href="https://github.com/qccs" class="social github" target="_blank" rel="external">
+          <span class="icon icon-github"></span>
+        </a>
+      
+        <a href="https://finance.json119.com" class="social vcard" target="_blank" rel="external">
+          <span class="icon icon-vcard"></span>
+        </a>
+      
+        <a href="/atom.xml" class="social rss" target="_blank" rel="external">
+          <span class="icon icon-rss"></span>
+        </a>
+      
+    
+  </div>
+    <style>
+        .aaa{
+            text-align: center;
+        }
+    </style>
+    <div class="aaa">
+        <a href="https://info.flagcounter.com/fv6m"><img src="https://s11.flagcounter.com/count2/fv6m/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">渝ICP备16001049号</a></div>
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2f089ce8c3df6466fce313abefd662c3";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+
+
+    </script>
+</footer>
+
+
+  <script>setLoadingBarProgress(80);</script>
+  
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/node-waves/0.7.5/waves.min.js"></script>
+<script src="//cdn.bootcss.com/scrollReveal.js/3.3.2/scrollreveal.min.js"></script>
+<script src="/js/jquery.fitvids.js"></script>
+<script>
+	var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+	var ALGOLIA_API_KEY = "";
+	var ALGOLIA_APP_ID = "";
+	var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "hexo";
+  var ROOT = "/"||"/";
+  if(!ROOT.endsWith('/'))ROOT += '/';
+</script>
+<script src="/js/search.js"></script>
+<script src="/js/app.js"></script>
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
