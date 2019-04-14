@@ -147,287 +147,22 @@
 <section class="post-list">
 	
     <div class="post-wrapper">
-      <article class="post reveal">
-  <section class="meta">
-    
-    <h2 class="title">
-      <a href="/2019/04/13/z/2018-09-10-lottie/">
-        从设计师和开发的角度使用 lottie
-      </a>
-    </h2>
-    
-    <time>
-      4月 13, 2019
-    </time>
-		
-    
-    <div class="cats">
-        <a href="/categories/JavaScript/">JavaScript</a>
-    </div>
-
-  </section>
-  <section class="article typo">
-	  <ul>
-<li>content<br>{:toc}</li>
-</ul>
-<p><img src="https://gw.alicdn.com/tfs/TB1yLBduDqWBKNjSZFAXXanSpXa-800-600.gif" alt></p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="https://airbnb.design/lottie/" target="_blank" rel="noopener">lottie</a> 是一个可以轻易的给各种 native app 添加高质量动画的类库。可以在 iOS、Android 和 React Native 实时渲染 After Effects 动画，就像使用静态图片一样容易。上图即为 lottie 的 logo。</p>
-<p>简单的说，lottie 动画制作的流程是，通过 Bodymovin 扩展将 AE 动画导出为 json 数据，然后再将这个 json 渲染在客户端或者 web 端。如下图：</p>
-<p><img src="https://gw.alicdn.com/tfs/TB1G3F7u67nBKNjSZLeXXbxCFXa-617-255.png" alt></p>
-<p>官网宣传了3个特性：</p>
-<ul>
-<li>灵活使用AE的特性</li>
-<li>随心所欲控制你的动画</li>
-<li>很小的文件体积</li>
-</ul>
-<p>个人认为 lottie 最大的优势就是可以将设计师设计的动图原原本本的在页面上展现出来，完美还原了动画的精细度，并且对动画拥有足够的控制能力。目前所有使用 gif 或 apng 的场景应该都可以使用 lottie，当然 lottie 不局限与此场景。</p>
-<p>本文主要从设计师视角和开发者视角讲述 lottie-web 的原理和使用以及 lottie 在 weex/rax 中的使用。</p>
-<p><a href="https://gaohaoyang.github.io/lottie-test/" target="_blank" rel="noopener">Demo</a></p>
-<video src="http://cloud.video.taobao.com//play/u/4121310810/p/1/e/6/t/1/50255502072.mp4" autoplay controls preload loop muted width="300px"></video>
-
-<p><img src="https://gw.alicdn.com/tfs/TB1xhmyutcnBKNjSZR0XXcFqFXa-300-300.png" alt></p>
-<iframe width="375px" height="500px" src="https://gaohaoyang.github.io/lottie-test/" frameborder="0"></iframe>
-
-<h2 id="设计师视角"><a href="#设计师视角" class="headerlink" title="设计师视角"></a>设计师视角</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>在 AE 中为 lottie 创作动画，你需要以下准备</p>
-<ul>
-<li><a href="https://www.adobe.com/products/aftereffects.html" target="_blank" rel="noopener">Adobe After Effects</a></li>
-<li><a href="http://airbnb.io/lottie/after-effects/bodymovin-installation.html" target="_blank" rel="noopener">Bodymovin AE 插件</a></li>
-<li>Lottiefiles preview app (集成了 lottie sdk 的 app)</li>
-</ul>
-<p>安装 Bodymovin 插件的流程如下：</p>
-<ol>
-<li>关闭 AE</li>
-<li>安装 ZXP installer。 ZXP Installer 就是专门用来安装 Adobe 公司的软件产品的插件的工具。</li>
-<li>下载最新的 bodymovin 扩展。<br><a href="https://github.com/airbnb/lottie-web/blob/master/build/extension/bodymovin.zxp" target="_blank" rel="noopener">https://github.com/airbnb/lottie-web/blob/master/build/extension/bodymovin.zxp</a><br><img src="https://gw.alicdn.com/tfs/TB1Q6dipMZC2uNjSZFnXXaxZpXa-2012-620.png" alt></li>
-<li>打开 ZXP installer 并把 bodymovin 扩展拖拽进来</li>
-<li>打开 AE，在菜单 <code>Window &gt; Extensions</code> 中，你会看到安装好的扩展</li>
-</ol>
-<p>安装插件详见 <a href="http://airbnb.io/lottie/after-effects/bodymovin-installation.html" target="_blank" rel="noopener">http://airbnb.io/lottie/after-effects/bodymovin-installation.html</a></p>
-<h3 id="从-Sketch-SVG-Illustrator-到-Lottie-的工作流"><a href="#从-Sketch-SVG-Illustrator-到-Lottie-的工作流" class="headerlink" title="从 Sketch/SVG/Illustrator 到 Lottie 的工作流"></a>从 Sketch/SVG/Illustrator 到 Lottie 的工作流</h3><p>下面讲讲如何从 Sketch 开始，制作一个 lottie 动画文件。如果你使用 svg 图片，跳到步骤3。如果你使用 AI，跳到步骤4。需要准备好 Sketch，AI，AE，并安装好 Bodymovin 插件。下面开始：</p>
-<ol>
-<li>在 sketch 中确保要导出的内容已经群组为一个 group</li>
-<li>将这个 group 导出为 svg</li>
-<li>在 AI 中打开 svg，并转存为 <code>.ai</code> 文件</li>
-<li>将 <code>.ai</code> 文件导入到 AE 中</li>
-<li>在 AE 中创建组件，设置动画持续时间和帧率</li>
-<li>将 ai 文件转为 shape layers。<br>在组件中选中你的图层，菜单 Layer 中选择 Create shapes from vector layer</li>
-<li><strong>添加你想要的任何动画，这一部分是你主要工作的步骤</strong></li>
-<li>使用 Bodymovin 导出为 json<br>菜单中选择 Window &gt; Extensions &gt; Bodymovin</li>
-<li>测试动画。<br>确保动画中没有<a href="http://airbnb.io/lottie/supported-features.html" target="_blank" rel="noopener">不支持的特性</a>，然后可以拖拽到 <a href="https://www.lottiefiles.com/" target="_blank" rel="noopener">lottieFiles</a> 中查看效果。<br>当然也可以上传到 lottieFiles 里，然后使用 lottie preview app 扫码查看。<br>这时你就可以将动画交付给开发同学啦！</li>
-</ol>
-<p>更多细节可查看官方文档 <a href="http://airbnb.io/lottie/after-effects/artwork-to-lottie-walkthrough.html" target="_blank" rel="noopener">Sketch/SVG/Illustrator to Lottie workflow</a></p>
-<h3 id="注意事项-amp-优化建议"><a href="#注意事项-amp-优化建议" class="headerlink" title="注意事项&amp;优化建议"></a>注意事项&amp;优化建议</h3><p>*AE 特性大部分已经支持，具体可以查看 <a href="http://airbnb.io/lottie/supported-features.html" target="_blank" rel="noopener">Supported Features（支持列表）</a>，设计师应该避免使用不支持 AE 的特性。</p>
-<p>目前开看，支持较好的属性有：</p>
-<ul>
-<li>Shapes</li>
-<li>Fills</li>
-<li>Strokes</li>
-<li>Transforms</li>
-<li>Interpolation</li>
-</ul>
-<p>不完全支持的属性分类有：</p>
-<ul>
-<li>Masks</li>
-<li>Mattes</li>
-<li>Merge Paths</li>
-<li>Layer Effects</li>
-<li>Text</li>
-</ul>
-<p><a href="http://airbnb.io/lottie/supported-features.html" target="_blank" rel="noopener"><img src="https://gw.alicdn.com/tfs/TB1ndK3uBsmBKNjSZFFXXcT9VXa-795-535.png" alt></a></p>
-<p>*设计过程中的优化建议和注意事项 <a href="http://airbnb.io/lottie/after-effects/general-tips.html" target="_blank" rel="noopener">General tips &amp; guidelines</a></p>
-<ul>
-<li>尽量保持简单小巧<br>在相同的图层上复制相同的关键帧会增加额外的代码，只有在必要时才使用路径关键帧动画。</li>
-<li>导出 1x 图</li>
-<li>No expressions or effects<br>Lottie 还不支持 expressions 或 effects 菜单中的任何 effects</li>
-<li>Matte and mask 尺寸问题<br>使用半透明遮罩会影响性能。如果必须使用遮罩，请覆盖最小的区域。</li>
-<li>不支持 Blending modes 或 Luma mattes</li>
-<li>不支持图层样式<br>图层效果不支持drop shadow, color overlay 或 stroke</li>
-<li>全屏动画，导出比最大屏幕宽度更宽一点的图像，在 Android 和 iOS 上可以分别裁切<br><img src="http://airbnb.io/lottie/images/LottieFullScreen.gif" alt></li>
-</ul>
-<h2 id="开发者视角"><a href="#开发者视角" class="headerlink" title="开发者视角"></a>开发者视角</h2><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>首先当然是看<a href="http://airbnb.io/lottie/" target="_blank" rel="noopener">开发文档</a>。这里我简单说说其中 lottie-web 的使用。</p>
-<p>可以通过 script 标签</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdnjs.com/libraries/bodymovin"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>或 npm 包 <a href="https://www.npmjs.com/package/lottie-web" target="_blank" rel="noopener">lottie-web</a> 引用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -S lottie-web</span><br></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lottie <span class="keyword">from</span> <span class="string">'lottie-web'</span></span><br></pre></td></tr></table></figure>
-<p>调用 loadAnimation()</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myLottie = lottie.loadAnimation(&#123;</span><br><span class="line">  container: <span class="built_in">document</span>.querySelector(<span class="string">'.img-area'</span>),</span><br><span class="line">  renderer: <span class="string">'svg'</span>,</span><br><span class="line">  name: <span class="string">'myLottieAnim'</span>,</span><br><span class="line">  loop: <span class="literal">true</span>,</span><br><span class="line">  autoplay: <span class="literal">true</span>,</span><br><span class="line">  path: <span class="string">'./assets/cycle_animation.json'</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="参数-api-事件"><a href="#参数-api-事件" class="headerlink" title="参数/api/事件"></a>参数/api/事件</h3><p>loadAnimation 的参数</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>container</td>
-<td>用于渲染的容器，一般使用一个 div 即可</td>
-</tr>
-<tr>
-<td>renderer</td>
-<td>渲染器，可以选择 ‘svg’ / ‘canvas’ / ‘html’，个人测试发现 svg 效果和兼容性最好</td>
-</tr>
-<tr>
-<td>name</td>
-<td>动画名称，用于 reference</td>
-</tr>
-<tr>
-<td>loop</td>
-<td>循环</td>
-</tr>
-<tr>
-<td>autoplay</td>
-<td>自动播放</td>
-</tr>
-<tr>
-<td>path</td>
-<td>json 路径，页面会通过一个 http 请求获取 json</td>
-</tr>
-<tr>
-<td>animationData</td>
-<td>json 动画数据，与 path 互斥，建议使用 path，因为 animationData 会将数据打包进来，会使得 js bundle 过大</td>
-</tr>
-</tbody>
-</table>
-<p>获取到 lottie 实例后，可以调用 api 控制动画，例如上述代码中可以使用</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myLottie.pause()</span><br></pre></td></tr></table></figure>
-<p>相关 api</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>stop</td>
-<td>无</td>
-<td>停止动画</td>
-</tr>
-<tr>
-<td>play</td>
-<td>无</td>
-<td>播放动画</td>
-</tr>
-<tr>
-<td>pause</td>
-<td>无</td>
-<td>暂停</td>
-</tr>
-<tr>
-<td>setSpeed</td>
-<td>Number</td>
-<td>设置播放速度，1 表示1倍速度，0.5 表示 0.5倍速度</td>
-</tr>
-<tr>
-<td>setDirection</td>
-<td>Number</td>
-<td>正反向播放，1 表示 正向，-1 表示反向</td>
-</tr>
-<tr>
-<td>goToAndStop</td>
-<td>Number, [Boolean]</td>
-<td>跳到某一帧或某一秒停止，第二个参数 iFrame 为是否基于帧模式还是时间，默认为 false</td>
-</tr>
-<tr>
-<td>goToAndPlay</td>
-<td>Number, [Boolean]</td>
-<td>跳到某一帧或某一秒开始，第二个参数 iFrame 为是否基于帧模式还是时间，默认为 false</td>
-</tr>
-<tr>
-<td>playSegments</td>
-<td>Array, [Boolean]</td>
-<td>播放片段，参数1为数组，两个元素为开始帧和结束帧；参数2为，是否立即播放片段，还是等之前的动画播放完成</td>
-</tr>
-<tr>
-<td>destroy</td>
-<td>无</td>
-<td>销毁</td>
-</tr>
-</tbody>
-</table>
-<p>事件</p>
-<ul>
-<li>onComplete</li>
-<li>onLoopComplete</li>
-<li>onEnterFrame</li>
-<li>onSegmentStart</li>
-</ul>
-<p>也可以使用 addEventListener 监听以下事件</p>
-<ul>
-<li>complete</li>
-<li>loopComplete</li>
-<li>enterFrame</li>
-<li>segmentStart</li>
-<li>config_ready (when initial config is done)</li>
-<li>data_ready (when all parts of the animation have been loaded)</li>
-<li>data_failed (when part of the animation can not be loaded)</li>
-<li>loaded_images (when all image loads have either succeeded or errored)</li>
-<li>DOMLoaded (when elements have been added to the DOM)</li>
-<li>destroy</li>
-</ul>
-<p>具体也可以查看<a href="https://github.com/airbnb/lottie-web/" target="_blank" rel="noopener">组件文档</a></p>
-<h3 id="优化建议"><a href="#优化建议" class="headerlink" title="优化建议"></a>优化建议</h3><ul>
-<li>使用压缩混淆过的 js，毕竟目前 lottie-web 还是有点大，gzip 后大概 57k</li>
-<li>尽量使用简单小巧的 json，其实也是需要在 AE 中做一些优化，这需要前端和设计一起配合完成，例如<ul>
-<li>避免使用很大的形状，但是用很小的 mask 切出来</li>
-<li>太多的节点也会影响性能</li>
-</ul>
-</li>
-</ul>
-<h2 id="weex-rax-中使用-lottie"><a href="#weex-rax-中使用-lottie" class="headerlink" title="weex/rax 中使用 lottie"></a>weex/rax 中使用 lottie</h2><p>weex/rax 已经提供了 lottie 组件，由于是内部文档，暂不放链接。</p>
-<p>api 支持没有 airbnb 官方完整，投入生产环境时还需要严格测试一下</p>
-<p><a href="http://dotwe.org/vue/946e8283f5cf31cfab2f923ec8cea07c" target="_blank" rel="noopener">vue-weex demo</a></p>
-<p><img src="https://gw.alicdn.com/tfs/TB1h65XuCMmBKNjSZTEXXasKpXa-256-256.png" alt></p>
-<p>使用<a href="http://web.npm.alibaba-inc.com/package/@ali/rax-lottie" target="_blank" rel="noopener">@ali/rax-lottie</a> 的 <a href="https://market.m.taobao.com/app/tmall-wireless/rax-life-progress/pages/my-lottie?wh_weex=true" target="_blank" rel="noopener">rax demo</a> 如下</p>
-<p><a href="https://market.m.taobao.com/app/tmall-wireless/rax-life-progress/pages/my-lottie?wh_weex=true" target="_blank" rel="noopener"><img src="https://gw.alicdn.com/tfs/TB16qbPuBjTBKNjSZFwXXcG4XXa-200-200.png" alt></a></p>
-<video src="http://cloud.video.taobao.com//play/u/4121310810/p/1/e/6/t/1/50255438306.mp4" autoplay controls preload loop muted width="300px"></video>
-
-<iframe width="375px" height="200px" src="https://market.m.taobao.com/app/tmall-wireless/rax-life-progress/pages/my-lottie?wh_weex=true" frameborder="0"></iframe>
-
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在我看来，追求更精细完美的动画体验一直是设计师和前端开发的使命。lottie 的出现可以替代传统的 gif，并且提供的 api 可以更好的控制动画。lottie 可能不适合用于过于复杂的大场景动画，但是局部的小动画，再适合不过了。</p>
-<p>lottie 应该是一个发展趋势，甚至未来浏览器说不定就原生直接支持了这种 json 动画，设计和开发之间的壁垒也会越来越小。</p>
-
-
-    
-    
-    
-	  <div class="full-width auto-padding tags">
-      
-        <a href="/tags/动画-CSS-airbnb-lottie-JavaScript/">动画 CSS airbnb lottie JavaScript</a>
-      
-	  </div>
-    
-  </section>
-</article>
-    </div>
-  
-    <div class="post-wrapper">
       <article class="post revealno-title">
   <section class="meta">
     
     <time>
-      4月 13, 2019
+      4月 14, 2019
     </time>
 		
   </section>
   <section class="article typo">
-	  <h1 id="一些JS题目的解答"><a href="#一些JS题目的解答" class="headerlink" title="一些JS题目的解答"></a>一些JS题目的解答</h1><p>在<a href="http://davidshariff.com/quiz/" target="_blank" rel="noopener">这里</a>看到一些测试题，我HTML和CSS比较一般，尝试把里面的JS题目都解答一下：</p>
-<p>#1.<br>    “1” + 2 + “3” + 4</p>
-<ul>
-<li>10</li>
-<li>1234</li>
-<li>37</li>
-</ul>
-<p>答案：1234，加法优先级等同，从左往右，数字与字符串相加，数字转换成字符串进行运算，结果等同于：”12”+”3”+4 = “123”+4 = “1234”。<br>
+	  <h1 id="2015前端组件化框架之路"><a href="#2015前端组件化框架之路" class="headerlink" title="2015前端组件化框架之路"></a>2015前端组件化框架之路</h1><h1 id="1-为什么组件化这么难做"><a href="#1-为什么组件化这么难做" class="headerlink" title="1. 为什么组件化这么难做"></a>1. 为什么组件化这么难做</h1><p>Web应用的组件化是一个很复杂的话题。</p>
+<p>在大型软件中，组件化是一种共识，它一方面提高了开发效率，另一方面降低了维护成本。但是在Web前端这个领域，并没有很通用的组件模式，因为缺少一个大家都能认同的实现方式，所以很多框架/库都实现了自己的组件化方式。</p>
+<p>前端圈最热衷于造轮子了，没有哪个别的领域能出现这么混乱而欣欣向荣的景象。这一方面说明前端领域的创造力很旺盛，另一方面却说明了基础设施是不完善的。<br>
 
     
 	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2013-12-02-一些JS题目的解答/">Read More</a>
+      <a href="/2019/04/14/杂谈/2015-02-26-components-in-webapp/">Read More</a>
     </div>
     
     
@@ -441,7 +176,7 @@
   <section class="meta">
     
     <time>
-      4月 13, 2019
+      4月 14, 2019
     </time>
 		
   </section>
@@ -450,66 +185,16 @@
 <h2 id="HTML-Components的一些特性"><a href="#HTML-Components的一些特性" class="headerlink" title="HTML Components的一些特性"></a>HTML Components的一些特性</h2><p>因为主流浏览器里面只有IE支持过HTC，所以很多人潜意识都认为它不标准，但其实它也是有标准文档的，而且到现在还有链接，注意它的时间！</p>
 <p><a href="http://www.w3.org/TR/NOTE-HTMLComponents" title="HTML Components" target="_blank" rel="noopener">http://www.w3.org/TR/NOTE-HTMLComponents</a></p>
 <p>我们来看看它主要能做什么呢？</p>
-<p>它可以以两种方式被引入到HTML页面中，一种是作为“行为”被附加到元素，使用CSS引入，一种是作为“组件”，扩展HTML的标签体系。</p>
-<h3 id="行为"><a href="#行为" class="headerlink" title="行为"></a>行为</h3><p>行为（Behavior）是在IE5中引入的一个概念，主要是为了做文档结构和行为的分离，把行为通过类似样式的方式隔离出去，详细介绍在这里可以看：</p>
-<p><a href="http://msdn.microsoft.com/en-us/library/ms531079(v=vs.85" target="_blank" rel="noopener">http://msdn.microsoft.com/en-us/library/ms531079(v=vs.85).aspx</a>.aspx)</p>
-<p>行为里可以引入HTC文件，刚才的HTC规范里就有，我们把它摘录出来，能看得清楚一些：</p>
-<p><em>engine.htc</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">HTML</span> <span class="attr">xmlns:PUBLIC</span>=<span class="string">"urn:HTMLComponent"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PUBLIC:EVENT</span> <span class="attr">NAME</span>=<span class="string">"onResultChange"</span> <span class="attr">ID</span>=<span class="string">"eventOnResultChange"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">SCRIPT</span> <span class="attr">LANGUAGE</span>=<span class="string">"JScript"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">doCalc</span>(<span class="params"></span>)</span></span></span><br><span class="line"><span class="undefined">&#123;</span></span><br><span class="line"><span class="undefined">   :</span></span><br><span class="line"><span class="undefined">   oEvent = createEventObject();</span></span><br><span class="line"><span class="undefined">   oEvent.result = sResult;</span></span><br><span class="line"><span class="undefined">   eventOnResultChange.fire (oEvent);</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">HTML</span> <span class="attr">xmlns:LK</span>=<span class="string">"urn:com.microsoft.htc.samples.calc"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">HEAD</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">STYLE</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="css">   <span class="selector-tag">LK</span>\<span class="selector-pseudo">:CALC</span>    &#123; <span class="attribute">behavior</span>:<span class="built_in">url</span>(engine.htc); &#125; </span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">STYLE</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">HEAD</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">LK:CALC</span> <span class="attr">ID</span>=<span class="string">"myCalc"</span> <span class="attr">onResultChange</span>=<span class="string">"resultWindow.innerText=window.event.result"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">TABLE</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">TR</span>&gt;</span><span class="tag">&lt;<span class="name">DIV</span> <span class="attr">ID</span>=<span class="string">"resultWindow"</span> <span class="attr">STYLE</span>=<span class="string">"border: '.025cm solid gray'"</span> <span class="attr">ALIGN</span>=<span class="string">RIGHT</span>&gt;</span>0.<span class="tag">&lt;/<span class="name">DIV</span>&gt;</span><span class="tag">&lt;/<span class="name">TR</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">TR</span>&gt;</span><span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 7 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 8 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 9 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" / "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" C "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">TR</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">TR</span>&gt;</span><span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 4 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 5 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 6 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" * "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" % "</span> <span class="attr">DISABLED</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">TR</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">TR</span>&gt;</span><span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 1 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 2 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 3 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" - "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">"1/x"</span> <span class="attr">DISABLED</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">TR</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">TR</span>&gt;</span><span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" 0 "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">"+/-"</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" . "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" + "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TD</span>&gt;</span><span class="tag">&lt;<span class="name">INPUT</span> <span class="attr">TYPE</span>=<span class="string">BUTTON</span> <span class="attr">VALUE</span>=<span class="string">" = "</span>&gt;</span><span class="tag">&lt;/<span class="name">TD</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">TR</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">TABLE</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LK:CALC</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">HTML</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这是一个计算器的例子，我们先大致看一下代码结构，是不是很清晰？再看看现在用jQuery，我们是怎么实现这种东西的：是用选择器选择这些按钮，然后添加事件处理函数。注意你多了一步选择的过程，而且，整个过程混杂了声明式和命令式两种代码风格。如果按照它这样，你所有的JS基本都丢在了隔离的不相关的文件中，整个是一个配置的过程，分离得很干净。</p>
-<p>除了这种计算器，还有规范文档中举例的改变界面展示，或者添加动画之类，注意它们的切入点，都是相当于附加在特定选中元素上的行为，即使DOM不给JS暴露任何选择器，也毫无影响，因为它们直接就通过CSS的选择器挂到元素上了。</p>
-<p>这种在现在看来，意义不算明显，现在广为使用的先选择元素再添加事件，也是不错的展现和行为分离方式。</p>
-<p>但另外一种使用方式就不同了。</p>
-<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p>狭义的HTML5给我们带来了什么？是很多新增的元素标签，比如section，nav，acticle，那这些东西跟原先直接用div实现的，好处在哪里呢？在于语义化。</p>
-<p>所谓语义化，就是一个元素能清晰表达自己是干什么的，不会让人有歧义，像div那种，可以类比成是一个Object，它不具体表示什么东西，但可以当成各种东西来用。而nav一写，就知道，它是导航，它就像有class定义的一个实体类，能表达具体含义。</p>
-<p>那么，原有的HTML元素显然是不够的，因为实际开发过程中要表达的东西显然远远超出这些元素，比如日历，这种东西就没有一个元素用来描述它，更不用说在一些企业应用中可能会出现的树之类复杂控件了。</p>
-<p>不提供原生元素，对开发造成的困扰是代码写起来麻烦，具体可以看之前我在知乎的一个回复，第三点：</p>
-<p><a href="http://www.zhihu.com/question/22426434/answer/21433867" target="_blank" rel="noopener">http://www.zhihu.com/question/22426434/answer/21433867</a></p>
-<p>所以，大家都想办法去提供自己的扩充元素的方式，现在我们是知道典型的有angularjs，polymer，但很早的时候也不是没有啊：</p>
-<p><a href="http://msdn.microsoft.com/en-us/library/ms531076(v=vs.85" target="_blank" rel="noopener">http://msdn.microsoft.com/en-us/library/ms531076(v=vs.85).aspx</a>.aspx)</p>
-<p>看，这就是HTC的添加自定义元素的方式，每个元素可以定义自己对外提供的属性、方法，还有事件，自己内部可以像写一个新页面一样，专注于实现功能。而且你发现没有，它考虑得很长远，提供了命名空间，防止你在一个页面引入两个不同组织提供的同名自定义元素。</p>
-<p>这个东西就可以称为组件了，它跟外界是完全隔离的，外界只要把它拿来就可以用，就像用原生元素一样，用选择器选择，设置属性，调用方法，添加事件处理等等，而且，注意到没有，它的属性是带get和set的，这是多么梦寐以求的东西！</p>
-<p>正是因为它这么好用，所以在那个时代，我们用它干了很多东西，封装了各种基础控件，比如树，数据表格，日期选择，等等，甚至当时也有人嫌弃浏览器原生select和radio不好看，用这么个东西，里面封装了图片来模拟功能，替换原生的来用。</p>
-<p>当时也有人，比如我在04年就想过，能不能把这些扩大化，扩展到除了基础控件之外的地方，把业务的组件也这么搞一下，一切皆组件，多好？</p>
-<p>但有些事情我直到后来很久以后才想明白，基于业务的端到端组件虽然写起来很方便，却是有致命缺陷的。</p>
-<p>到这里为止，对HTML Components的回顾告一段落，也不讨论它为什么就没了之类，这里面争议太大，我只想谈谈从这里面，能看到Web Components这么个大家寄予厚望的新标准需要面对一些什么问题。</p>
-<h2 id="Web-Components的挑战"><a href="#Web-Components的挑战" class="headerlink" title="Web Components的挑战"></a>Web Components的挑战</h2><p>以下逐条列出，挨个说明，有的已经有了，有的差一些，有的没有，不管这么多，总之谈谈我心目中的这个东西应当是怎样的。</p>
-<h3 id="自定义元素标签支持命名空间"><a href="#自定义元素标签支持命名空间" class="headerlink" title="自定义元素标签支持命名空间"></a>自定义元素标签支持命名空间</h3><p>原因我前面已经说了，可能会有不同组织实现同类功能的组件，存在于同一个页面内，引起命名歧义，所以我想了很久，还是觉得有前缀比较好：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">yours:ComponentA</span>&gt;</span><span class="tag">&lt;/<span class="name">yours:ComponentA</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">his:ComponentA</span>&gt;</span><span class="tag">&lt;/<span class="name">his:ComponentA</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>甚至，这里的前缀还可以是个简称别名，比如yours=com.aaa.productA，这可能只有复杂到一定程度才会出现，大家不要以为这太夸张，但总有一天Web体系能构建超大型软件，到那时候你就知道是不是可能了。</p>
-<h3 id="样式的局部作用域"><a href="#样式的局部作用域" class="headerlink" title="样式的局部作用域"></a>样式的局部作用域</h3><p>这个前一段时间有的浏览器实现过，在组件内部，style上加一个scoped属性，这是正确的方向。为什么要这么干呢，所谓组件，引入成本越小越好，在无约定的情况下都能引入，不造成问题，那是最佳的结果。</p>
-<p>如果你一个组件的样式不是局部的，很可能就跟主界面的冲突了，就算你不跟主界面的冲突，怎么保证不跟主界面中包含的其他组件的样式冲突？靠命名约定是不现实的，看长远一些，等你的系统够大，这就是大问题了。</p>
-<h3 id="跟主文档的通讯"><a href="#跟主文档的通讯" class="headerlink" title="跟主文档的通讯"></a>跟主文档的通讯</h3><p>一个自定义组件，应当能够跟主文档进行通讯，这个过程包括两个方向，分别可以有多种不同的方式。</p>
-<h4 id="从内向外"><a href="#从内向外" class="headerlink" title="从内向外"></a>从内向外</h4><p>除了事件，真没有什么好办法可以做这个方向的通讯，但事件也可以有两种定义方式，一种是类似onclick那种，主文档应当能够在它上面直接添加对应的事件监听函数，就像对原生元素那样，每个事件都能单独使用。另一种是像postMessage那样，只提供一个通道，具体怎么处理，自己去定义消息格式和处理方式。</p>
-<p>这两种实现方式都可行，后者比较偷懒，但也够用了，前者也没有明显优势。</p>
-<h4 id="从外向内"><a href="#从外向内" class="headerlink" title="从外向内"></a>从外向内</h4><p>这个也可以有两种方式，一种是组件对外暴露属性或者方法，让主文档调用，一种是外部也通过postMessage往里传。前者用起来会比较方便，后者也能凑合用用。</p>
-<p>所以，如果特别偷懒，这个组件就变得像一个iframe那样，跟外部基本都通过postMessage交互。</p>
-<h3 id="JavaScript"><a href="#JavaScript" class="headerlink" title="JavaScript"></a>JavaScript</h3><p>写到这里我是很纠结的，因为终于来到争议最大的地方了。按照很多人的思路，我这里应该也写隔离成局部作用域的JavaScript才对，但真不行，我们可以先假设组件内部的所有JavaScript都跑在局部作用域，它不能访问主文档中的对象。</p>
-<p>我这里解释一下之前那个坑，为什么端到端组件是有缺陷的。</p>
-<p>先解释什么叫端到端组件。比如说，我有这么一个组件，它封装了对后端某接口的调用，还有自身的一些展示处理，跟外界通过事件通信。它整个是不需要依赖别人的，初始加载数据都是自己内部做，别人要用它也很简单，直接拿来放在页面里就可以了。</p>
-<p>照理说，这东西应当非常好才对，使用起来这么方便，到底哪里不对？我来举个场景。</p>
-<p>在页面上同时存在这个组件的多个实例，每个组件都去加载了初始数据，假设它们是不带参数的，每个组件加载的数据都一样，这里是不是就有浪费的请求了？有人可能觉得一点点浪费不算问题，那么继续。</p>
-<p>假设这个组件就是一个很普通的下拉列表，用于选取人员的职业，初始可能有医生，教师，警察等等，我把这个组件直接放在界面上，它一出现，就自己去加载了所需的列表信息并且展示了。有另外一个配置界面，用于配置这些职业信息，这时候我在里面添加了一个护士，并且提交了。假设为了数据一致性，我们把这个变更推回到页面，麻烦就出现了。</p>
-<p>界面只有一个职业下拉列表的时候可能还好办，有多个的时候，这个更新的策略就有问题了。</p>
-<p>如果在组件的内部做这个推送的对接，就会出现要推送多份一致的数据给组件的不同实例的问题。如果把这个放在外面，那我们也有两种方式：</p>
-<ul>
-<li>订阅发布模式，组件订阅某个数据源，数据源跟服务端对接，当数据变更的时候，发给每个订阅者</li>
-<li>观察者模式，组件观察某个数据源，当数据变更的时候，去取回来</li>
-</ul>
-<p>这两种很类似，不管哪种，都面临一个问题：</p>
-<p>数据源放在哪？</p>
-<p>很明显不能放在组件内部了，只能放在某个“全局”的地方，但刚才我们假设的是，组件内部的JavaScript代码不能访问外界的对象，所以……</p>
-<p>但要是让它能访问，组件的隔离机制等于白搭。最好的方式，也许是两种都支持，默认是局部作用域，另外专门有一个作用域放给JS框架之类的东西用，但浏览器实现的难度可能就大了不少。</p>
-<p>可能有人会说，你怎么把问题搞这么复杂，用这么BT的场景来给我们美好的未来出难题。我觉得问题总是要面对的，能在做出来之前就面对问题，结果应该会好一些。</p>
-<p>我注意观察了很多朋友对Web Components的态度，大部分都是完全叫好，但其中有一部分，主要是搞前端MV*的同学对它的态度很保守，主要原因应该是我说的这几点。因为这个群体主要都在做单页型的应用，这个里面会遇到的问题是跟传统前端不同的。</p>
-<p>那么，比如Angular，或者React，它们跟Web Components的协作点在哪里呢？我个人觉得是把引擎保留下来，上层部分逐步跟Web Components融合，所以它们不是谁吃掉谁的问题，而是怎样去融合。最终就是在前端有两层，一层是数据和业务逻辑层，一层是偏UI的，在那个层里面，可以存在像Web Components那样的垂直切分，这样会很适宜。</p>
-<p>最后说说自己对Polymer的意见，我的看法没有@司徒正美 那么粗暴，但我是认同他的观点的，因为Polymer的根本理念就是在做端到端组件，它会面临很多的挑战。虽然它是一个组件化框架，组件化最适宜于解决大规模协作问题，但是如果是以走向大型单页应用这条路来看，它比Angular和React离目标的距离还远很多。</p>
-
+<p>它可以以两种方式被引入到HTML页面中，一种是作为“行为”被附加到元素，使用CSS引入，一种是作为“组件”，扩展HTML的标签体系。<br>
 
     
+	  <div class="readmore">
+      <a href="/2019/04/14/杂谈/2014-10-01-From HTC to Web Components/">Read More</a>
+    </div>
     
     
-  </section>
+    
+  </p></section>
 </article>
     </div>
   
@@ -518,36 +203,22 @@
   <section class="meta">
     
     <time>
-      4月 13, 2019
+      4月 14, 2019
     </time>
 		
   </section>
   <section class="article typo">
 	  <h1 id="给一位打算从事前端，但是又有疑惑的在校大学生的回信"><a href="#给一位打算从事前端，但是又有疑惑的在校大学生的回信" class="headerlink" title="给一位打算从事前端，但是又有疑惑的在校大学生的回信"></a>给一位打算从事前端，但是又有疑惑的在校大学生的回信</h1><p>抱歉这么晚才回复这个邮件，主要是觉得你的问题有典型性，想要详细一点给出答复。</p>
-<p>所谓的前端，在不同的公司，定义是不同的，工作内容也会有差异，有的还很大。比如有很多公司，没有专门的前端分类，所有的都属于开发人员，一些比较传统的公司，还有一些人数较少的小公司会是这样。又比如有些公司，前端人员的职责仅限于静态页面和交互效果，然后把这些东西交给业务开发人员去编写业务的JS代码。还有一些公司，前端除了PC和移动端的Web，还包括各种移动终端的开发。</p>
-<p>这些种种不同，都是各公司自身的业务特点决定的，大体上比较适合各自的业务场景，越大的公司，内部的分工可能越明确，所以也就有了你看到的，有比较偏向JS的，有比较偏向CSS的。</p>
-<p>个人选择什么方向，我觉得需要问自己两个问题：</p>
-<ol>
-<li>你是一个怎样的人</li>
-</ol>
-<p>这个的意思是，你觉得自己学js和css的时候，哪种觉得更轻松愉快，容易领悟。一个人选择自己最容易领悟的方面去学习，会事半功倍。</p>
-<ol start="2">
-<li>你希望成为一个怎样的人</li>
-</ol>
-<p>人的一生，实际上很大程度是职业细分的过程，每个人在他工作的前10年，都可能会逐步深入到某些领域，他的知识广度可能会逐步增加，但能够深入的，往往在一两个分支上。</p>
-<p>从大的方面看，最初的软件体系基本都是以服务端为主，客户端通过字符界面去进行操作，后来桌面程序迅速发展，再后来Web兴起，最近各种终端的流行，更加促使广义的“前端”这个领域有更多的发挥空间。整体来说，后端的发展趋势是服务化，前端的发展趋势是多样化。因为消费者的促进，前端的需求和发展会是非常乐观的，无论在其中选择哪个细分方向，只要努力下去，成为这个领域的专家，肯定都会有所成就。</p>
-<p>目前，在很多公司，搞CSS一般还没有独立职位，或者即使有，暂时比搞JS的还是稍微弱势一些，正如前端部门一般比后端部门弱势，但这种状况会好转的，每个领域都会得到适合自己的发挥。</p>
-<p>关于原生JS和某些库的学习，我的观点是这样，除了一些很特别很怪异的点，对于语言本身的常规用法是需要都掌握的，其实也不多，常用到的就那么些。一般说的原生JS，是包括JS语言本身，还有它对DOM和BOM的操作，比如元素的创建移除，事件的添加等等，这些应该都需要懂。至于说对于某个库的学习，更重要的是学习它的思维方式，每看一个例子，就先想一想如果自己写，会把代码写成怎样，再与真实的例子进行对照，举一反三，这样的学习会是很快的过程。</p>
-<p>现在这个时代，各种浏览器还在混战，但低版本IE的淘汰已经成为了必然，如果是现在开始学习，一定要着眼于将来，多看看CSS3各子集的规范，了解ES新版本的特性，因为世界迟早是它们的。对于低版本浏览器的兼容，一般都会有成熟的解决方案，当遇到具体问题的时候再去看也可以。</p>
-<p>很多人看待前端，是把它当作一个很浅的层面来看的，其实前端的人多了解一些别的领域也是有好处的，从中能得到很多领悟，比如软件工程，设计模式，它们对不管什么方面的开发人员而言，都是很好的指导。</p>
-<p>一个成熟的前端开发人员，他应当有比较宽的知识面，同时至少在某一两个细分领域有专注的研究和见解。平时在日常生活中，也可以多注意观察一些产品，对自己正在做的整个产品有深刻认识，对生活常识有充分了解，有时候也会有助于减少开发过程中走的弯路。</p>
-<p>能够对自己的未来有所预期，并且主动寻找学习的途径，这说明你有很好的开始，在前端这条道路上认真走下去，相信会有美好的未来。</p>
-
+<p>所谓的前端，在不同的公司，定义是不同的，工作内容也会有差异，有的还很大。比如有很多公司，没有专门的前端分类，所有的都属于开发人员，一些比较传统的公司，还有一些人数较少的小公司会是这样。又比如有些公司，前端人员的职责仅限于静态页面和交互效果，然后把这些东西交给业务开发人员去编写业务的JS代码。还有一些公司，前端除了PC和移动端的Web，还包括各种移动终端的开发。<br>
 
     
+	  <div class="readmore">
+      <a href="/2019/04/14/杂谈/2014-10-04-to-be-a-fe/">Read More</a>
+    </div>
     
     
-  </section>
+    
+  </p></section>
 </article>
     </div>
   
@@ -556,7 +227,31 @@
   <section class="meta">
     
     <time>
-      4月 13, 2019
+      4月 14, 2019
+    </time>
+		
+  </section>
+  <section class="article typo">
+	  <h1 id="前端架构那些事儿"><a href="#前端架构那些事儿" class="headerlink" title="前端架构那些事儿"></a>前端架构那些事儿</h1><p>在谈前端架构之前，需要先探讨一下不同人群对前端产生的困惑。前端这个职业最近几年才逐渐被认可，之前一直是低端的代名词，所以多数高手很不屑搞这个。之前的很多项目，人们对前端这块的要求也只是能用就行，所以很少会在上面去细致、深入地建立一套完善体系。而多数产品的技术经理也会是后端出身的，往往对前端的认识还停留在Java Struts那个原始的MVC模型上，或者首先想到的就是GWT和JSF，这是从后端角度出发的一种视角。用这类思维方式做出来的产品，一般用户体验都不会很好。</p>
+<p>另一方面，从界面层上手的人群，他对用户体验这方面会把控得比较好，但通常缺架构意识，或者说是软件工程的意识。在界面层比较复杂的情况下，很可能会有失控的趋势。对整个系统结构的认知程度通常不够深入，也缺乏设计模式等方面的知识。<br>
+
+    
+	  <div class="readmore">
+      <a href="/2019/04/14/杂谈/2014-05-20-前端架构那些事儿/">Read More</a>
+    </div>
+    
+    
+    
+  </p></section>
+</article>
+    </div>
+  
+    <div class="post-wrapper">
+      <article class="post revealno-title">
+  <section class="meta">
+    
+    <time>
+      4月 14, 2019
     </time>
 		
   </section>
@@ -565,85 +260,11 @@
 <p><a href="https://coding.net/" target="_blank" rel="noopener">coding</a></p>
 <p><a href="https://www.teambition.com/" target="_blank" rel="noopener">teambition</a></p>
 <p><a href="https://c9.io/" target="_blank" rel="noopener">cloud9</a></p>
-<p>注意这几个网站的相同点，那就是在浏览器中，做了原先“应当”在客户端做的事情。它们的界面切换非常流畅，响应很迅速，跟传统的网页明显不一样，它们是什么呢？这就是单页Web应用。</p>
-<p>所谓单页应用，指的是在一个页面上集成多种功能，甚至整个系统就只有一个页面，所有的业务功能都是它的子模块，通过特定的方式挂接到主界面上。它是AJAX技术的进一步升华，把AJAX的无刷新机制发挥到极致，因此能造就与桌面程序媲美的流畅用户体验。</p>
-<p>其实单页应用我们并不陌生，很多人写过ExtJS的项目，用它实现的系统，很天然的就已经是单页的了，也有人用jQuery或者其他框架实现过类似的东西。用各种JS框架，甚至不用框架，都是可以实现单页应用的，它只是一种理念。有些框架适用于开发这种系统，如果使用它们，可以得到很多便利。</p>
-<h2 id="开发框架"><a href="#开发框架" class="headerlink" title="开发框架"></a>开发框架</h2><p>ExtJS可以称为第一代单页应用框架的典型，它封装了各种UI组件，用户主要使用JavaScript来完成整个前端部分，甚至包括布局。随着功能逐渐增加，ExtJS的体积也逐渐增大，即使用于内部系统的开发，有时候也显得笨重了，更不用说开发以上这类运行在互联网上的系统。</p>
-<p>jQuery由于偏重DOM操作，它的插件体系又比较松散，所以比ExtJS这个体系更适合开发在公网运行的单页系统，整个解决方案会相对比较轻量、灵活。</p>
-<p>但由于jQuery主要面向上层操作，它对代码的组织是缺乏约束的。如何在代码急剧膨胀的情况下控制每个模块的内聚性，并且适当在模块之间产生数据传递与共享，就成为了一种有挑战的事情。</p>
-<p>为了解决单页应用规模增大时候的代码逻辑问题，出现了不少MV*框架，他们的基本思路都是在JS层创建模块分层和通信机制。有的是MVC，有的是MVP，有的是MVVM，而且，它们几乎都在这些模式上产生了变异，以适应前端开发的特点。</p>
-<p>这类框架包括Backbone，Knockout，AngularJS，Avalon等。</p>
-<h2 id="组件化"><a href="#组件化" class="headerlink" title="组件化"></a>组件化</h2><p>这些在前端做分层的框架推动了代码的组件化，所谓组件化，在传统的Web产品中，更多的指UI组件，但其实组件是一个广泛概念，传统Web产品中UI组件占比高的原因是它的厚度不足，随着客户端代码比例的增加，相当一部分的业务逻辑也前端化，由此催生了很多非界面型组件的出现。</p>
-<p>分层带来的一个优势是，每层的职责更专一了，由此，可以对其作单元测试的覆盖，以保证其质量。传统UI层测试最头疼的问题是UI层和逻辑混杂在一起，比如往往会在远程请求的回调中更改DOM，当引入分层之后，这些东西都可以分别被测试，然后再通过场景测试来保证整体流程。</p>
-<h2 id="代码隔离"><a href="#代码隔离" class="headerlink" title="代码隔离"></a>代码隔离</h2><p>与开发传统页面型网站相比，实现单页应用的过程中，有一些比较值得特别关注的点。</p>
-<p>从单页应用的特点来看，它比页面型网站更加依赖于JavaScript，而由于页面的单页化，各种子功能的JavaScript代码聚集到了同一个作用域，所以代码的隔离、模块化变得很重要。</p>
-<p>在单页应用中，页面模板的使用是很普遍的。很多框架内置了特定的模板，也有的框架需要引入第三方的模板。这种模板是界面片段，我们可以把它们类比成JavaScript模块，它们是另一种类型的组件。</p>
-<p>模板也一样有隔离的需要。不隔离模板，会造成什么问题呢？模板间的冲突主要存在于id属性上，如果一个模板中包含固定的id，当它被批量渲染的时候，会造成同一个页面的作用域中出现多个相同id的元素，产生不可预测的后果。因此，我们需要在模板中避免使用id，如果有对DOM的访问需求，应当通过其他选择器来完成。如果一个单页应用的组件化程度非常高，很可能整个应用中都没有元素id的使用。</p>
-<h2 id="代码合并与加载策略"><a href="#代码合并与加载策略" class="headerlink" title="代码合并与加载策略"></a>代码合并与加载策略</h2><p>人们对于单页系统的加载时间容忍度与Web页面不同，如果说他们愿意为购物页面的加载等待3秒，有可能会愿意为单页应用的首次加载等待5-10秒，但在此之后，各种功能的使用应当都比较流畅，所有子功能页面尽量要在1-2秒时间内切换成功，否则他们就会感觉这个系统很慢。</p>
-<p>从这些特点来看，我们可以把更多的公共功能放到首次加载，以减小每次加载的载入量，有一些站点甚至把所有的界面和逻辑全部放到首页加载，每次业务界面切换的时候，只产生数据请求，因此它的响应是非常迅速的，比如青云的控制台就是这么做的。</p>
-<p>通常在单页应用中，无需像网站型产品一样，为了防止文件加载阻塞渲染，把js放到html后面加载，因为它的界面基本都是动态生成的。</p>
-<p>当切换功能的时候，除了产生数据请求，还需要渲染界面，这个新渲染的界面部件一般是界面模板，它从哪里来呢？来源无非是两种，一种是即时请求，像请求数据那样通过AJAX获取过来，另一种是内置于主界面的某些位置，比如script标签或者不可见的textarea中，后者在切换功能的时候速度有优势，但是加重了主页面的负担。</p>
-<p>在传统的页面型网站中，页面之间是互相隔离的，因此，如果在页面间存在可复用的代码，一般是提取成单独的文件，并且可能会需要按照每个页面的需求去进行合并。单页应用中，如果总的代码量不大，可以整体打包一次在首页载入，如果大到一定规模，再作运行时加载，加载的粒度可以搞得比较大，不同的块之间没有重复部分。</p>
-<h2 id="路由与状态的管理"><a href="#路由与状态的管理" class="headerlink" title="路由与状态的管理"></a>路由与状态的管理</h2><p>我们最开始看到的几个在线应用，有的是对路由作了管理的，有的没有。</p>
-<p>管理路由的目的是什么呢？是为了能减少用户的导航成本。比如说我们有一个功能，经历过多次导航菜单的点击，才呈现出来。如果用户想要把这个功能地址分享给别人，他怎么才能做到呢？</p>
-<p>传统的页面型产品是不存在这个问题的，因为它就是以页面为单位的，也有的时候，服务端路由处理了这一切。但是在单页应用中，这成为了问题，因为我们只有一个页面，界面上的各种功能区块是动态生成的。所以我们要通过对路由的管理，来实现这样的功能。</p>
-<p>具体的做法就是把产品功能划分为若干状态，每个状态映射到相应的路由，然后通过pushState这样的机制，动态解析路由，使之与功能界面匹配。</p>
-<p>有了路由之后，我们的单页面产品就可以前进后退，就像是在不同页面之间一样。</p>
-<p>其实在Web产品之外，早就有了管理路由的技术方案，Adobe Flex中，就会把比如TabNavigator，甚至下拉框的选中状态对应到url上，因为它也是单“页面”的产品模式，需要面对同样的问题。</p>
-<p>当产品状态复杂到一定程度的时候，路由又变得很难应用了，因为状态的管理极其麻烦，比如开始的时候我们演示的c9.io在线IDE，它就没法把状态对应到url上。</p>
-<h2 id="缓存与本地存储"><a href="#缓存与本地存储" class="headerlink" title="缓存与本地存储"></a>缓存与本地存储</h2><p>在单页应用的运作机制中，缓存是一个很重要的环节。</p>
-<p>由于这类系统的前端部分几乎全是静态文件，所以它能够有机会利用浏览器的缓存机制，而比如动态加载的界面模板，也完全可以做一些自定义的缓存机制，在非首次的请求中直接取缓存的版本，以加快加载速度。</p>
-<p>甚至，也出现了一些方案，在动态加载JavaScript代码的同时，把它们也缓存起来。比如Addy Osmani的这个<a href="https://github.com/addyosmani/basket.js" target="_blank" rel="noopener">basket.js</a>，就利用了HTML5 localStorage作了js和css文件的缓存。</p>
-<p>在单页产品中，业务代码也常常会需要跟本地存储打交道，存储一些临时数据，可以使用<a href="https://github.com/mortzdk/localStorage" target="_blank" rel="noopener">localStorage</a>或者<a href="https://github.com/knadh/localStorageDB" target="_blank" rel="noopener">localStorageDB</a>来简化自己的业务代码。</p>
-<h2 id="服务端通信"><a href="#服务端通信" class="headerlink" title="服务端通信"></a>服务端通信</h2><p>传统的Web产品通常使用JSONP或者AJAX这样的方式与服务端通信，但在单页Web应用中，有很大一部分采用WebSocket这样的实时通讯方式。</p>
-<p>WebSocket与传统基于HTTP的通信机制相比，有很大的优势。它可以让服务端很便利地使用反向推送，前端只响应确实产生业务数据的事件，减少一遍又一遍无意义的AJAX轮询。</p>
-<p>由于WebSocket只在比较先进的浏览器上被支持，有一些库提供了在不同浏览器中的兼容方案，比如socket.io，它在不支持WebSocket的浏览器上会降级成使用AJAX或JSONP等方式，对业务代码完全透明、兼容。</p>
-<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><p>传统的Web页面一般是不需要考虑内存的管理的，因为用户的停留时间相对少，即使出现内存泄漏，可能很快就被刷新页面之类的操作冲掉了，但单页应用是不同的，它的用户很可能会把它开一整天，因此，我们需要对其中的DOM操作、网络连接等部分格外小心。</p>
-<h2 id="样式的规划"><a href="#样式的规划" class="headerlink" title="样式的规划"></a>样式的规划</h2><p>在单页应用中，因为页面的集成度高，所有页面聚集到同一作用域，样式的规划也变得重要了。</p>
-<p>样式规划主要是几个方面：</p>
-<h3 id="基准样式的分离"><a href="#基准样式的分离" class="headerlink" title="基准样式的分离"></a>基准样式的分离</h3><p>这里面主要包括浏览器样式的重设、全局字体的设置、布局的基本约定和响应式支持。</p>
-<h3 id="组件样式的划分"><a href="#组件样式的划分" class="headerlink" title="组件样式的划分"></a>组件样式的划分</h3><p>这里面是两个层面的规划，首先是各种界面组件及其子元素的样式，其次是一些修饰样式。组件样式应当尽量减少互相依赖，各组件的样式允许冗余。</p>
-<h3 id="堆叠次序的管理"><a href="#堆叠次序的管理" class="headerlink" title="堆叠次序的管理"></a>堆叠次序的管理</h3><p>传统Web页面的特点是元素多，但是层次少，单页应用会有些不同。</p>
-<p>在单页应用中，需要提前为各种UI组件规划堆叠次序，也就是z-index，比如说，我们可能会有各种弹出对话框，浮动层，它们可能组合成各种堆叠状态。新的对话框的z-index需要比旧的高，才能确保盖在它上面。诸如此类，都需要我们对这些可能的遮盖作规划，那么，怎样去规划呢？</p>
-<p>了解通信知识的人，应当会知道，不同的频率段被划分给不同的通信方式使用，在一些国家，领空的使用也是有划分的，我们也可以用同样的方式来预先分段，不同类型的组件的z-index落到各自的区间，以避免它们的冲突。</p>
-<h2 id="单页应用的产品形态"><a href="#单页应用的产品形态" class="headerlink" title="单页应用的产品形态"></a>单页应用的产品形态</h2><p>我们在开始的时候提到，存在着很多新型Web产品，使用单页应用的方式构建，但实际上，这类产品不仅仅存在于Web上。点开Chrome商店，我们会发现很多离线应用，这些产品都可以算是单页应用的体现。</p>
-<p>除了各种浏览器插件，借助node-webkit这样的外壳平台，我们可以使用Web技术来构建本地应用，产品的主要部分仍然是我们熟悉的单页应用。</p>
-<p>单页应用的流行程度正在逐渐增加，大家如果关注了一些初创型互联网企业，会发现其中很大一部分的产品模式是单页化的。这种模式能带给用户流畅的体验，在开发阶段，对JavaScript技能水平要求较高。</p>
-<p>单页应用开发过程中，前后端是天然分离的，双方以API为分界。前端作为服务的消费者，后端作为服务的提供者。在此模式下，前端将会推动后端的服务化。当后端不再承担模板渲染、输出页面这样工作的情况下，它可以更专注于所提供的API的实现，而在这样的情况下，Web前端与各种移动终端的地位对等，也逐渐使得后端API不必再为每个端作差异化设计了。</p>
-<h2 id="部署模式的改变"><a href="#部署模式的改变" class="headerlink" title="部署模式的改变"></a>部署模式的改变</h2><p>在现在这个时代，我们已经可以看到一种产品的出现了，那就是“无后端”的Web应用。这是一种什么东西呢？基于这种理念，你的产品很可能只需要自己编写静态Web页面，在某种BaaS（Backend as a Service）云平台上定制服务端API和云存储，集成这个平台提供的SDK，通过AJAX等方式与之打交道，实现注册认证、社交、消息推送、实时通信、云存储等功能。</p>
-<p>我们观察一下这种模式，会发现前后端的部署已经完全分离了，前端代码完全静态化，这意味着可以把它们放置到CDN上，访问将大大地加速，而服务端托管在BaaS云上，开发者也不必去关注一些部署方面的繁琐细节。</p>
-<p>假设你是一名创业者，正在做的是一种实时协同的单页产品，可以在云平台上，快速定制后端服务，把绝大部分宝贵的时间花在开发产品本身上。</p>
-<h2 id="单页应用的缺陷"><a href="#单页应用的缺陷" class="headerlink" title="单页应用的缺陷"></a>单页应用的缺陷</h2><p>单页应用最根本的缺陷就是不利于SEO，因为界面的绝大部分都是动态生成的，所以搜索引擎很不容易索引它。</p>
-<h2 id="产品单页化带来的挑战"><a href="#产品单页化带来的挑战" class="headerlink" title="产品单页化带来的挑战"></a>产品单页化带来的挑战</h2><p>一个产品想要单页化，首先是它必须适合单页的形态。其次，在这个过程中，对开发模式会产生一些变更，对开发技能也会有一些要求。</p>
-<p>开发者的JavaScript技能必须过关，同时需要对组件化、设计模式有所认识，他所面对的不再是一个简单的页面，而是一个运行在浏览器环境中的桌面软件。</p>
-
-
-    
-    
-    
-  </section>
-</article>
-    </div>
-  
-    <div class="post-wrapper">
-      <article class="post revealno-title">
-  <section class="meta">
-    
-    <time>
-      4月 13, 2019
-    </time>
-		
-  </section>
-  <section class="article typo">
-	  <h1 id="前端MV-框架的意义"><a href="#前端MV-框架的意义" class="headerlink" title="前端MV*框架的意义"></a>前端MV*框架的意义</h1><p>经常有人质疑，在前端搞MV<em>有什么意义？也有人提出这样的疑问：以AngularJS，Knockout，BackBone为代表的MV</em>框架，它跟jQuery这样的框架有什么区别？我jQuery用得好好的，有什么必要再引入这种框架？</p>
-<p>回答这些问题之前，先要理清一些历史，前端从什么时候开始有框架的？</p>
-<p>早期前端都是比较简单，基本以页面为工作单元，内容以浏览型为主，也偶尔有简单的表单操作，这个时期每个界面上只有很少的JavaScript逻辑，基本不太需要框架。随着AJAX的出现，Web2.0的兴起，人们可以在页面上可以做比较复杂的事情了，然后前端框架才真正出现了，以jQuery为代表，针对界面上常见的DOM操作，远程请求，数据处理等作了封装，也有专注于处理数据的Underscore，严格来说，这些都不能算框架，而是算库。</p>
-<p>库和框架是有一些区别的：库是一种工具，我提供了，你可以不用，即使你用了，也没影响你自己的代码结构。框架则是面向一个领域，提供一套解决方案，如果你用我，就得按照我的方式办事。按照这个定义，jQuery和Underscore都只能算是库，ExtJS和dojo算框架。</p>
-<p>MV*框架又是为什么兴起的呢？它的出现，伴随着一些Web产品逐渐往应用方向发展，遇到了在C/S领域相同的问题：由于前端功能的增强、代码的膨胀，导致不得不做“前端的架构”这个事情了。<br>
+<p>注意这几个网站的相同点，那就是在浏览器中，做了原先“应当”在客户端做的事情。它们的界面切换非常流畅，响应很迅速，跟传统的网页明显不一样，它们是什么呢？这就是单页Web应用。<br>
 
     
 	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2013-10-22-前端MV☆框架的意义/">Read More</a>
+      <a href="/2019/04/14/杂谈/2014-10-21-build-single-page-application/">Read More</a>
     </div>
     
     
@@ -657,20 +278,21 @@
   <section class="meta">
     
     <time>
-      4月 13, 2019
+      4月 14, 2019
     </time>
 		
   </section>
   <section class="article typo">
-	  <h1 id="企业软件领域前端开发的困境"><a href="#企业软件领域前端开发的困境" class="headerlink" title="企业软件领域前端开发的困境"></a>企业软件领域前端开发的困境</h1><p>前一段时间，看到阿里几位前端大师的讨论：<a href="https://github.com/lifesinger/lifesinger.github.com/issues/141" target="_blank" rel="noopener">阿里前端的困局与突围</a>，对这个职业的发展方向有一些思考，我上次跟winter和dh一起吃饭，也简单聊到这个话题。</p>
-<p>winter问了一个问题，如果在互联网企业跟游戏开发的企业同时进行一次针对前端开发的大裁员，对这个企业的核心价值而言，哪种影响更大？</p>
-<p>这个问题问得很有意思，在每个行业里，前端开发的侧重点是不一样的，重要性也有所不同，简单来说可以分为3个大类：互联网、企业应用、游戏，分别侧重于：交互、架构、算法。</p>
-<p>在这三个大类里，互联网方向的前端开发最为正统，算是根正苗红，所以在这个领域的人，对标准研究得最为透彻，对交互理解得最为深刻，目前前端方向的高手大多集中在这个领域。这个领域的人最关注的问题是兼容性，对一些细节的优化把握得炉火纯青。因为这个领域的业务特点，前端做的事情过于扁平，整个可发挥的余地不够，虽然高手众多，但就像很多龙挤在浅水里，常常有无用武之地的感叹。刚才玉伯这篇文章，讲述的就是这个领域中前端的困惑。</p>
-<p>企业应用方向的前端开发其实很多时候并不在意他们用的是Web还是其他类似技术，比如Flex，Silverlight等，对他们来说，即使是C/S的系统，也能够发挥出很大价值。这个领域的人最关注的问题是组件化和快速业务开发。<br>
+	  <h1 id="从零开始编写自己的JavaScript框架（一）"><a href="#从零开始编写自己的JavaScript框架（一）" class="headerlink" title="从零开始编写自己的JavaScript框架（一）"></a>从零开始编写自己的JavaScript框架（一）</h1><p>#1. 模块的定义和加载</p>
+<p>##1.1 模块的定义</p>
+<p>一个框架想要能支撑较大的应用，首先要考虑怎么做模块化。有了内核和模块加载系统，外围的模块就可以一个一个增加。不同的JavaScript框架，实现模块化方式各有不同，我们来选择一种比较优雅的方式作个讲解。</p>
+<p>先问个问题：我们做模块系统的目的是什么？如果觉得这个问题难以回答，可以从反面来考虑：假如不做模块系统，有什么样的坏处？</p>
+<p>我们经历过比较粗放、混乱的前端开发阶段，页面里充满了全局变量，全局函数。那时候要复用js文件，就是把某些js函数放到一个文件里，然后让多个页面都来引用。</p>
+<p>考虑到一个页面可以引用多个这样的js，这些js互相又不知道别人里面写了什么，很容易造成命名的冲突，而产生这种冲突的时候，又没有哪里能够提示出来。所以我们要有一种办法，把作用域比较好地隔开。<br>
 
     
 	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2013-10-01-企业软件领域前端开发的困境/">Read More</a>
+      <a href="/2019/04/14/杂谈/2013-07-01-从零开始编写自己的JavaScript框架（一）/">Read More</a>
     </div>
     
     
@@ -684,19 +306,25 @@
   <section class="meta">
     
     <time>
-      4月 13, 2019
+      4月 14, 2019
     </time>
 		
   </section>
   <section class="article typo">
-	  <h1 id="Web应用的组件化开发（一）"><a href="#Web应用的组件化开发（一）" class="headerlink" title="Web应用的组件化开发（一）"></a>Web应用的组件化开发（一）</h1><h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>#1. 为什么要做组件化？</p>
-<p>无论前端也好，后端也好，都是整个软件体系的一部分。软件产品也是产品，它的研发过程也必然是有其目的。绝大多数软件产品是追逐利润的，在产品目标确定的情况下，成本有两个途径来优化：减少部署成本，提高开发效率。</p>
-<p>减少部署成本的方面，业界研究得非常多，比如近几年很流行的“去IOE”，就是很典型的，从一些费用较高的高性能产品迁移到开源的易替换的产品集群，又比如使用Linux + Mono来部署.net应用，避开Windows Server的费用。</p>
-<p>提高开发效率这方面，业界研究得更多，主要途径有两点：加快开发速度，减少变更代价。怎样才能加快开发速度呢？如果我们的开发不是重新造轮子，而是每一次做新产品都可以利用已有的东西，那就会好很多。怎样才能减少变更代价呢？如果我们能够理清模块之间的关系，合理分层，每次变更只需要修改其中某个部分，甚至不需要修改代码，仅仅是改变配置就可以，那就更好了。<br>
+	  <h1 id="前端开发技术的发展"><a href="#前端开发技术的发展" class="headerlink" title="前端开发技术的发展"></a>前端开发技术的发展</h1><p>前端开发技术，从狭义的定义来看，是指围绕HTML、JavaScript、CSS这样一套体系的开发技术，它的运行宿主是浏览器。从广义的定义来看，包括了：</p>
+<ul>
+<li>专门为手持终端设计的类似WML这样的类HTML语言，类似WMLScript这样的类JavaScript语言。</li>
+<li>VML和SVG等基于XML的描述图形的语言。</li>
+<li>从属于XML体系的XML，XPath，DTD等技术。</li>
+<li>用于支撑后端的ASP，JSP，ASP.net，PHP，nodejs等语言或者技术。</li>
+<li>被第三方程序打包的一种类似浏览器的宿主环境，比如Adobe AIR和使用HyBird方式的一些开发技术，如PhoneGap（它使用Android中的WebView等技术，让开发人员使用传统Web开发技术来开发本地应用）</li>
+<li>Adobe Flash，Flex，Microsoft Silverlight，Java Applet，JavaFx等RIA开发技术。</li>
+</ul>
+<p>本文从狭义的前端定义出发，探讨一下这方面开发技术的发展过程。<br>
 
     
 	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2013-11-20-Web应用的组件化开发（一）/">Read More</a>
+      <a href="/2019/04/14/杂谈/2013-01-14-前端开发技术的发展/">Read More</a>
     </div>
     
     
@@ -710,7 +338,7 @@
   <section class="meta">
     
     <time>
-      4月 13, 2019
+      4月 14, 2019
     </time>
 		
   </section>
@@ -728,7 +356,32 @@ var person = {
 
     
 	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2013-07-10-从零开始编写自己的JavaScript框架（二）/">Read More</a>
+      <a href="/2019/04/14/杂谈/2013-07-10-从零开始编写自己的JavaScript框架（二）/">Read More</a>
+    </div>
+    
+    
+    
+  </p></section>
+</article>
+    </div>
+  
+    <div class="post-wrapper">
+      <article class="post revealno-title">
+  <section class="meta">
+    
+    <time>
+      4月 14, 2019
+    </time>
+		
+  </section>
+  <section class="article typo">
+	  <h1 id="企业软件领域前端开发的困境"><a href="#企业软件领域前端开发的困境" class="headerlink" title="企业软件领域前端开发的困境"></a>企业软件领域前端开发的困境</h1><p>这个问题问得很有意思，在每个行业里，前端开发的侧重点是不一样的，重要性也有所不同，简单来说可以分为3个大类：互联网、企业应用、游戏，分别侧重于：交互、架构、算法。</p>
+<p>在这三个大类里，互联网方向的前端开发最为正统，算是根正苗红，所以在这个领域的人，对标准研究得最为透彻，对交互理解得最为深刻，目前前端方向的高手大多集中在这个领域。这个领域的人最关注的问题是兼容性，对一些细节的优化把握得炉火纯青。因为这个领域的业务特点，前端做的事情过于扁平，整个可发挥的余地不够，虽然高手众多，但就像很多龙挤在浅水里，常常有无用武之地的感叹。刚才玉伯这篇文章，讲述的就是这个领域中前端的困惑。</p>
+<p>企业应用方向的前端开发其实很多时候并不在意他们用的是Web还是其他类似技术，比如Flex，Silverlight等，对他们来说，即使是C/S的系统，也能够发挥出很大价值。这个领域的人最关注的问题是组件化和快速业务开发。<br>
+
+    
+	  <div class="readmore">
+      <a href="/2019/04/14/杂谈/2013-10-01-企业软件领域前端开发的困境/">Read More</a>
     </div>
     
     
@@ -747,24 +400,12 @@ var person = {
 		
   </section>
   <section class="article typo">
-	  <h1 id="影响企业应用前端开发效率的因素"><a href="#影响企业应用前端开发效率的因素" class="headerlink" title="影响企业应用前端开发效率的因素"></a>影响企业应用前端开发效率的因素</h1><p>原先是在知乎上回答一个<a href="http://www.zhihu.com/question/22426434/answer/21433867" target="_blank" rel="noopener">问题</a>的，整理了放这里：</p>
-<p>我们来分析一下究竟哪些因素让企业应用的前端开发这么困扰。</p>
-<p>先看看界面部分吧。</p>
-<p>#1. 命令式还是声明式<br>毫无疑问，就写界面来说，声明式的代码编写效率远高于命令式：</p>
-<pre><code>&lt;Panel title=&quot;Test&quot;&gt;
-  &lt;Button label=&quot;Click me&quot;/&gt;
-&lt;/Panel&gt;
-
-Panel p = new Panel();
-p.title = &quot;Test&quot;;
-Button b = new Button();
-b.label = &quot;Click me&quot;;
-p.add(b);
-</code></pre><p>第一种容易写，容易理解。<br>
+	  <h1 id="为什么企业应用这么“钟情”于IE6"><a href="#为什么企业应用这么“钟情”于IE6" class="headerlink" title="为什么企业应用这么“钟情”于IE6"></a>为什么企业应用这么“钟情”于IE6</h1><p>企业内部的信息化，很多起步都很早，但B/S化基本都是从2000年以后开始的，之前有各种客户端，比如基本的Win32 API开发，或者Delphi体系（VCL等，C++ Builder也算在内），微软的几个封装化的体系（ATL，MFC，还有昙花一现的JFC），Java体系（AWT、Swing，SWT等），这些技术本身都比较成熟，IDE的支持也不错，但最终，很大一部分迁移到Web上了。</p>
+<p>迁移到Web的最直接因素是部署成本，B/S架构有天然的部署优势，无需分发，这一点人所共知，但另外还有个重要因素是开发成本。很多人对这一点不相信，为什么呢，因为现在前端码农也不便宜啊，怎么就他降低开发成本了？<br>
 
     
 	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2014-01-06-影响企业应用前端开发效率的因素/">Read More</a>
+      <a href="/2019/04/13/杂谈/2014-01-20-为什么企业应用这么“钟情”于IE6/">Read More</a>
     </div>
     
     
@@ -828,31 +469,15 @@ p.add(b);
     
     <ul class="entry">
     
-        <li><a class="flat-box" href="/categories/Bootstrap/"><div class="name">Bootstrap</div><div class="badget">1</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/CSS/"><div class="name">CSS</div><div class="badget">1</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/GitHub/"><div class="name">GitHub</div><div class="badget">2</div></a></li>
+        <li><a class="flat-box" href="/categories/GitHub/"><div class="name">GitHub</div><div class="badget">1</div></a></li>
     
         <li><a class="flat-box" href="/categories/HTML-CSS/"><div class="name">HTML CSS</div><div class="badget">1</div></a></li>
     
-        <li><a class="flat-box" href="/categories/Interview/"><div class="name">Interview</div><div class="badget">1</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/JavaScript/"><div class="name">JavaScript</div><div class="badget">22</div></a></li>
+        <li><a class="flat-box" href="/categories/JavaScript/"><div class="name">JavaScript</div><div class="badget">20</div></a></li>
     
         <li><a class="flat-box" href="/categories/Sublime/"><div class="name">Sublime</div><div class="badget">1</div></a></li>
     
         <li><a class="flat-box" href="/categories/Tools/"><div class="name">Tools</div><div class="badget">1</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/css1/"><div class="name">css1</div><div class="badget">0</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/jekyll/"><div class="name">jekyll</div><div class="badget">2</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/js/"><div class="name">js</div><div class="badget">0</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/js1/"><div class="name">js1</div><div class="badget">0</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/mysql1/"><div class="name">mysql1</div><div class="badget">0</div></a></li>
     
     </ul>
     
@@ -863,7 +488,7 @@ p.add(b);
 <div class="m_widget tagcloud">
     <div class="header">标签</div>
     <div class="content">
-        <a href="/tags/Baidu-ife-HTML-CSS-task/" style="font-size: 14px; color: #808080">Baidu ife HTML CSS task</a> <a href="/tags/Baidu-ife-JavaScript-正则-Regular/" style="font-size: 14px; color: #808080">Baidu ife JavaScript 正则 Regular</a> <a href="/tags/BootStrap-HTML-CSS-Zhihu/" style="font-size: 14px; color: #808080">BootStrap HTML CSS Zhihu</a> <a href="/tags/ES2015-ES6-ES5-babel/" style="font-size: 14px; color: #808080">ES2015 ES6 ES5 babel</a> <a href="/tags/Git-GitHub-分支/" style="font-size: 14px; color: #808080">Git GitHub 分支</a> <a href="/tags/GitHub-同步-fork/" style="font-size: 14px; color: #808080">GitHub 同步 fork</a> <a href="/tags/IE-CSS-兼容性-HTML/" style="font-size: 14px; color: #808080">IE CSS 兼容性 HTML</a> <a href="/tags/JavaScript-Ajax-URL-HistoryApi-pushState-pjax/" style="font-size: 14px; color: #808080">JavaScript Ajax URL HistoryApi pushState pjax</a> <a href="/tags/JavaScript-Array-算法-慕课网/" style="font-size: 14px; color: #808080">JavaScript Array 算法 慕课网</a> <a href="/tags/JavaScript-HTML-CSS-Sass-移动端-XSS-AMD-requireJS-CommonJS-性能优化-WebApp/" style="font-size: 14px; color: #808080">JavaScript HTML CSS Sass 移动端 XSS AMD requireJS CommonJS 性能优化 WebApp</a> <a href="/tags/JavaScript-HTML-CSS-思维导图-技能树/" style="font-size: 14px; color: #808080">JavaScript HTML CSS 思维导图 技能树</a> <a href="/tags/JavaScript-作用域-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 作用域 慕课网 ife</a> <a href="/tags/JavaScript-函数-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 函数 慕课网 ife</a> <a href="/tags/JavaScript-慕课网-this-ife/" style="font-size: 14px; color: #808080">JavaScript 慕课网 this ife</a> <a href="/tags/JavaScript-闭包-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 闭包 慕课网 ife</a> <a href="/tags/JavaScript-面向对象-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 面向对象 慕课网 ife</a> <a href="/tags/Sublime-jshint-csslint/" style="font-size: 14px; color: #808080">Sublime jshint csslint</a> <a href="/tags/Weinre-WebApp-调试工具-JavaScript-HTML-CSS/" style="font-size: 14px; color: #808080">Weinre WebApp 调试工具 JavaScript HTML CSS</a> <a href="/tags/countdown-JavaScript/" style="font-size: 14px; color: #808080">countdown JavaScript</a> <a href="/tags/jekyll-RubyGems/" style="font-size: 14px; color: #808080">jekyll RubyGems</a> <a href="/tags/jekyll-端口-markdown-Foxit-RubyGems-HTML-CSS/" style="font-size: 14px; color: #808080">jekyll 端口 markdown Foxit RubyGems HTML CSS</a> <a href="/tags/tools-CSS-reveal-配色/" style="font-size: 14px; color: #808080">tools CSS reveal 配色</a> <a href="/tags/函数-JavaScript/" style="font-size: 14px; color: #808080">函数 JavaScript</a> <a href="/tags/动画-CSS-airbnb-lottie-JavaScript/" style="font-size: 14px; color: #808080">动画 CSS airbnb lottie JavaScript</a> <a href="/tags/动画-手势/" style="font-size: 14px; color: #808080">动画 手势</a> <a href="/tags/对象-函数-this-闭包-面向对象-作用域/" style="font-size: 14px; color: #808080">对象 函数 this 闭包 面向对象 作用域</a> <a href="/tags/效率-vscode-markdown/" style="font-size: 14px; color: #808080">效率 vscode markdown</a> <a href="/tags/文件-下载-JavaScript/" style="font-size: 14px; color: #808080">文件 下载 JavaScript</a> <a href="/tags/正则-分组-Regular/" style="font-size: 14px; color: #808080">正则 分组 Regular</a> <a href="/tags/算法-shuffle-乱序-洗牌/" style="font-size: 14px; color: #808080">算法 shuffle 乱序 洗牌</a> <a href="/tags/继承-对象-原型-Array-正则/" style="font-size: 14px; color: #808080">继承 对象 原型 Array 正则</a> <a href="/tags/面试-Lenovo-实习-JavaScript/" style="font-size: 14px; color: #808080">面试 Lenovo 实习 JavaScript</a>
+        <a href="/tags/Baidu-ife-HTML-CSS-task/" style="font-size: 14px; color: #808080">Baidu ife HTML CSS task</a> <a href="/tags/Baidu-ife-JavaScript-正则-Regular/" style="font-size: 14px; color: #808080">Baidu ife JavaScript 正则 Regular</a> <a href="/tags/ES2015-ES6-ES5-babel/" style="font-size: 14px; color: #808080">ES2015 ES6 ES5 babel</a> <a href="/tags/GitHub-同步-fork/" style="font-size: 14px; color: #808080">GitHub 同步 fork</a> <a href="/tags/JavaScript-Ajax-URL-HistoryApi-pushState-pjax/" style="font-size: 14px; color: #808080">JavaScript Ajax URL HistoryApi pushState pjax</a> <a href="/tags/JavaScript-Array-算法/" style="font-size: 14px; color: #808080">JavaScript Array 算法</a> <a href="/tags/JavaScript-HTML-CSS-Sass-移动端-XSS-AMD-requireJS-CommonJS-性能优化-WebApp/" style="font-size: 14px; color: #808080">JavaScript HTML CSS Sass 移动端 XSS AMD requireJS CommonJS 性能优化 WebApp</a> <a href="/tags/JavaScript-作用域-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 作用域 慕课网 ife</a> <a href="/tags/JavaScript-函数-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 函数 慕课网 ife</a> <a href="/tags/JavaScript-慕课网-this-ife/" style="font-size: 14px; color: #808080">JavaScript 慕课网 this ife</a> <a href="/tags/JavaScript-闭包-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 闭包 慕课网 ife</a> <a href="/tags/JavaScript-面向对象-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 面向对象 慕课网 ife</a> <a href="/tags/Sublime-jshint-csslint/" style="font-size: 14px; color: #808080">Sublime jshint csslint</a> <a href="/tags/Weinre-WebApp-调试工具-JavaScript-HTML-CSS/" style="font-size: 14px; color: #808080">Weinre WebApp 调试工具 JavaScript HTML CSS</a> <a href="/tags/countdown-JavaScript/" style="font-size: 14px; color: #808080">countdown JavaScript</a> <a href="/tags/tools-CSS-reveal-配色/" style="font-size: 14px; color: #808080">tools CSS reveal 配色</a> <a href="/tags/函数-JavaScript/" style="font-size: 14px; color: #808080">函数 JavaScript</a> <a href="/tags/动画-CSS-airbnb-lottie-JavaScript/" style="font-size: 14px; color: #808080">动画 CSS airbnb lottie JavaScript</a> <a href="/tags/动画-手势/" style="font-size: 14px; color: #808080">动画 手势</a> <a href="/tags/对象-函数-this-闭包-面向对象-作用域/" style="font-size: 14px; color: #808080">对象 函数 this 闭包 面向对象 作用域</a> <a href="/tags/文件-下载-JavaScript/" style="font-size: 14px; color: #808080">文件 下载 JavaScript</a> <a href="/tags/正则-分组-Regular/" style="font-size: 14px; color: #808080">正则 分组 Regular</a> <a href="/tags/算法-shuffle-乱序-洗牌/" style="font-size: 14px; color: #808080">算法 shuffle 乱序 洗牌</a> <a href="/tags/继承-对象-原型-Array-正则/" style="font-size: 14px; color: #808080">继承 对象 原型 Array 正则</a>
     </div>
 </div>
 

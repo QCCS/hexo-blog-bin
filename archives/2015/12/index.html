@@ -183,100 +183,11 @@
 <li>使用前端模板引擎 handlebars 解决动态操作将 html 拼接在 js 中的问题</li>
 </ul>
 <p>但最近写了一个项目类似知乎这样的多页网站。前端 url 的处理让我觉得不够优雅。我使用的是 hash 的方式处理动态 url 的，为此我专门在知乎上提了一个问题：<a href="https://www.zhihu.com/question/38802932" target="_blank" rel="noopener">前端如何处理动态url？</a></p>
-<p>这里我将问题描述如下：</p>
-<blockquote>
-<p>前后端彻底分离的情况下，页面跳转页全部由前端控制。那么如何更好的处理动态url地址？<br>例如本问题的url为<br><a href="https://www.zhihu.com/question/38802932" target="_blank" rel="noopener">https://www.zhihu.com/question/38802932</a><br>这肯定是用后台路由处理的url</p>
-<p>纯前端怎么处理？用hash吗，如下:<br><a href="https://www.zhihu.com/question#38802932" target="_blank" rel="noopener">https://www.zhihu.com/question#38802932</a><br>那如果本页跳转，只改变hash的话，页面不会刷新。<br>使用<code>location.reload()</code>倒是可以解决。</p>
-<p><strong>但总觉得这样处理不够优雅。大家在工作中是如何处理此类场景的？还是用传统的后台路由来提供动态url？</strong></p>
-</blockquote>
-<p>感谢郑海波和剧中人的热心回答。都提到了<code>history</code>对象中的<code>pushState</code>，这是我第一次接触到这方面的内容（顿时觉得自己真是才疏学浅）。</p>
-<p>同时也有人提到了<code>pjax</code>，这个就是<code>pushState</code>+<code>Ajax</code>的封装，也很有意思。</p>
-<p>下面就来研究和实践一下吧。</p>
-<h2 id="History"><a href="#History" class="headerlink" title="History"></a>History</h2><p><code>window</code>对象通过<code>history</code>对象提供对浏览器历史记录的访问能力。它暴露了一些非常有用的方法和属性，让你在历史记录中自由前进和后退，而在 HTML5 中，更可以操纵历史记录中的数据。</p>
-<h3 id="back-forward-go-length"><a href="#back-forward-go-length" class="headerlink" title="back(), forward(), go(), length"></a><code>back()</code>, <code>forward()</code>, <code>go()</code>, <code>length</code></h3><p>浏览器的历史记录就好像一个栈，最新的在最上面，较早之前看过的在下面。</p>
-<p>如下图，Chrome的历史记录：</p>
-<p><img src="http://ww2.sinaimg.cn/large/7011d6cfjw1ezb16fn2bfj20k008htan.jpg" alt="chrome history"></p>
-<p>下面介绍怎么在这些历史记录中跳转，但要<strong>注意</strong>，上图中的浏览器历史记录和本文说的 history 还不太同。</p>
-<ul>
-<li><p><code>back()</code></p>
-<p>  在历史记录中后退</p>
-<pre><code>history.back();
-</code></pre></li>
-<li><p><code>forward()</code></p>
-<p>  在历史记录中前进</p>
-<pre><code>history.forward();
-</code></pre></li>
-<li><p><code>go()</code></p>
-<p>  移动到指定的历史记录点</p>
-<pre><code>history.go(-1);
-</code></pre><p>  通过指定一个相对于当前页面位置的数值，你可以使用go()方法从当前会话的历史记录中加载页面（当前页面位置索引值为0，上一页就是-1，下一页为1）。</p>
-<p>  <strong>go()不填参数或参数为go(0)时，页面会刷新，即<code>history.go()</code>或<code>history.go(0)</code>相当于<code>location.reload()</code></strong></p>
-</li>
-<li><p><code>length</code></p>
-<p>  <code>length</code>为history的属性，显示history长度。</p>
-</li>
-</ul>
-<p>本节在线demo见：<a href="http://gaohaoyang.github.io/history-pjax-demo/" target="_blank" rel="noopener">History &amp; pjax demo</a> 源代码：<a href></a></p>
-<p><strong>经过亲自测试，<code>history</code>对象只记录同一个 tab 页内的历史。如果是在新窗口打开的，则无效。如：在a标签中添加<code>target=&quot;_blank&quot;</code>，或按住<code>ctrl</code>点击，这类场景下，在新的tab页中，<code>history</code>对象也是新的。</strong></p>
-<p><strong>且<code>history</code>对象记录的信息与是否同源也无关，所以唯一要满足的就是同一个标签页。</strong></p>
-<h3 id="pushState-replaceState"><a href="#pushState-replaceState" class="headerlink" title="pushState(), replaceState()"></a><code>pushState()</code>, <code>replaceState()</code></h3><p>HTML5 引进了<code>history.pushState()</code>方法和<code>history.replaceState()</code>方法，它们允许你逐条地添加和修改历史记录条目，能够在不加载新页面的情况下没改变浏览器的URL。这些方法可以协同<code>window.onpopstate</code>事件一起工作。</p>
-<p>使用<code>history.pushState()</code>会改变<code>referrer</code>的值，而在你调用方法后创建的  XMLHttpRequest 对象会在 HTTP 请求头中使用这个值。<code>referrer的</code>值则是创建  XMLHttpRequest 对象时所处的窗口的 URL。</p>
-<ul>
-<li><p><code>pushState(any data, string title, [string url])</code></p>
-<p>  第一个参数为<code>history</code>对象的<code>state</code>属性值，可以放任意数据，记录历史状态。第二个参数是新状态的标题，目前浏览器基本不支持。第三个参数为可选的相对url。</p>
-<p>  执行<code>pushState</code>后，可以在不加载新页面的情况下，更改url。同时<code>history</code>栈中新增一条数据。</p>
-<p>  例如，我们有这样一段代码：</p>
-<pre><code>&lt;button id=&quot;push1&quot;&gt;pushState()&lt;/button&gt;
 
-document.querySelector(&apos;#push1&apos;).addEventListener(&apos;click&apos;, function() {
-    history.pushState(&apos;abc&apos;,&apos;pushStatePageTitle&apos;,&apos;pushState.html&apos;);
-    document.querySelector(&apos;#length&apos;).innerHTML = history.length;//重新读取历史长度
-});
-</code></pre><p>  当点击按钮的时候，页面不会刷新，但<code>url</code>地址的最后已经变为<code>pushState.html</code>。这一点非常像<code>hash</code>的作用，但比<code>hash</code>更优雅。</p>
-</li>
-</ul>
-<ul>
-<li><p><code>replaceState(any data, string title, [string url])</code></p>
-<p>  与<code>pushState()</code>类似，只是在<code>history</code>栈中不是新增记录，而是替换一条记录。</p>
-</li>
-</ul>
-<p><strong>需要注意的是：</strong><code>pushState()</code>和<code>replaceState()</code>方法存在安全方面的限制，本地测试是无效的，会报错，可以简单放到任何服务端测试，或者使用<code>http-server</code>开启简单服务器，通过访问<code>localhost</code>来查看效果。</p>
-<p>本节demo见：<a href="http://gaohaoyang.github.io/history-pjax-demo/index.html" target="_blank" rel="noopener">History &amp; pjax demo - pushState</a></p>
-<h2 id="pjax"><a href="#pjax" class="headerlink" title="pjax"></a>pjax</h2><p>现在再看本文一开始提出的问题，如何让前端优雅的控制 url，这里就可以考虑 pjax 技术了。我们把 pushState + ajax 进行封装，合起来简称为 pjax。虽然不是什么新的技术，但概念已然不同。</p>
-<p>如果不使用 pjax。我们依然可以使用<code>hash</code>来实现文本开始的需求。但会不利于 SEO，看着也不够优雅。</p>
-<p>Pjax的原理十分简单。</p>
-<ol>
-<li>拦截 a 标签的默认跳转动作或某些按钮的点击事件。</li>
-<li>使用 Ajax 请求新页面。</li>
-<li>将返回的 Html 替换到页面中。</li>
-<li>使用 HTML5 的<code>pushState()</code>修改Url。</li>
-</ol>
-<p>个人理解3中也可以仅仅请求数据，再由浏览器渲染。</p>
-<p>每当同一个文档的浏览历史（即history对象）出现变化时，会触发<code>window.onpopstate</code>事件。</p>
-<pre><code>window.onpopstate = function(event) {
-    console.log(event.state);
-    console.log(location);
-};
-</code></pre><p>这样在用户点击前进后退时也可以很好的监听url，来做相应的页面渲染。</p>
-<p>若用户刷新了页面，但没有相应的页面资源，这时页面就会显示不存在。所以我认为较好的方法是在写<code>pushState()</code>第三个参数的时候，写为<code>?a=1</code>这样的参数形式。<a href="https://github.com/browserstate/history.js" target="_blank" rel="noopener">History.js</a> 也是这么写的。但是这样应该会多一次请求。也许使用 nodeJS 作为中间层会好一些吧。</p>
-<p>对于上述的探索，不知道是不是我还不够深入，总觉得还是不够完美。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/History" target="_blank" rel="noopener">MDN History</a></li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/DOM/Manipulating_the_browser_history" target="_blank" rel="noopener">MDN 操纵浏览器的历史记录</a></li>
-<li><a href="https://www.zhihu.com/question/20289254" target="_blank" rel="noopener">pjax 是如何工作的？ 知乎</a></li>
-<li><a href="http://www.cnblogs.com/hustskyking/p/history-api-in-html5.html" target="_blank" rel="noopener">PJAX的实现与应用 小胡子哥</a></li>
-<li><a href="http://www.ruanyifeng.com/blog/2011/03/url_hash.html" target="_blank" rel="noopener">URL的井号-阮一峰</a></li>
-<li><a href="http://javascript.ruanyifeng.com/bom/history.html" target="_blank" rel="noopener">history对象 JavaScript 标准参考教程（alpha） 阮一峰</a></li>
-<li><a href="http://www.ayqy.net/blog/pjaxpushstate-and-ajax/" target="_blank" rel="noopener">Pjax(pushState and Ajax) 黯羽轻扬</a></li>
-<li><a href="http://www.clanfei.com/2012/09/1646.html" target="_blank" rel="noopener">操纵历史，利用HTML5 History API实现无刷新跳转 蓝飞</a></li>
-<li><a href="http://segmentfault.com/a/1190000002920768" target="_blank" rel="noopener">前端：将网站打造成单页面应用SPA（一） Coffce</a></li>
-<li><a href="https://github.com/Coffcer/coffce-pjax" target="_blank" rel="noopener">coffce-pjax</a></li>
-<li><a href="https://github.com/browserstate/history.js" target="_blank" rel="noopener">History.js</a></li>
-<li><a href="https://github.com/defunkt/jquery-pjax" target="_blank" rel="noopener">defunkt/jquery-pjax GitHub</a></li>
-<li><a href="https://github.com/welefen/pjax" target="_blank" rel="noopener">welefen/pjax</a></li>
-</ul>
-
-
+    
+	  <div class="readmore">
+      <a href="/2015/12/31/z/2015-12-31-History-API/">Read More</a>
+    </div>
     
     
     
@@ -330,31 +241,15 @@ document.querySelector(&apos;#push1&apos;).addEventListener(&apos;click&apos;, f
     
     <ul class="entry">
     
-        <li><a class="flat-box" href="/categories/Bootstrap/"><div class="name">Bootstrap</div><div class="badget">1</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/CSS/"><div class="name">CSS</div><div class="badget">1</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/GitHub/"><div class="name">GitHub</div><div class="badget">2</div></a></li>
+        <li><a class="flat-box" href="/categories/GitHub/"><div class="name">GitHub</div><div class="badget">1</div></a></li>
     
         <li><a class="flat-box" href="/categories/HTML-CSS/"><div class="name">HTML CSS</div><div class="badget">1</div></a></li>
     
-        <li><a class="flat-box" href="/categories/Interview/"><div class="name">Interview</div><div class="badget">1</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/JavaScript/"><div class="name">JavaScript</div><div class="badget">22</div></a></li>
+        <li><a class="flat-box" href="/categories/JavaScript/"><div class="name">JavaScript</div><div class="badget">20</div></a></li>
     
         <li><a class="flat-box" href="/categories/Sublime/"><div class="name">Sublime</div><div class="badget">1</div></a></li>
     
         <li><a class="flat-box" href="/categories/Tools/"><div class="name">Tools</div><div class="badget">1</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/css1/"><div class="name">css1</div><div class="badget">0</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/jekyll/"><div class="name">jekyll</div><div class="badget">2</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/js/"><div class="name">js</div><div class="badget">0</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/js1/"><div class="name">js1</div><div class="badget">0</div></a></li>
-    
-        <li><a class="flat-box" href="/categories/mysql1/"><div class="name">mysql1</div><div class="badget">0</div></a></li>
     
     </ul>
     
@@ -365,7 +260,7 @@ document.querySelector(&apos;#push1&apos;).addEventListener(&apos;click&apos;, f
 <div class="m_widget tagcloud">
     <div class="header">标签</div>
     <div class="content">
-        <a href="/tags/Baidu-ife-HTML-CSS-task/" style="font-size: 14px; color: #808080">Baidu ife HTML CSS task</a> <a href="/tags/Baidu-ife-JavaScript-正则-Regular/" style="font-size: 14px; color: #808080">Baidu ife JavaScript 正则 Regular</a> <a href="/tags/BootStrap-HTML-CSS-Zhihu/" style="font-size: 14px; color: #808080">BootStrap HTML CSS Zhihu</a> <a href="/tags/ES2015-ES6-ES5-babel/" style="font-size: 14px; color: #808080">ES2015 ES6 ES5 babel</a> <a href="/tags/Git-GitHub-分支/" style="font-size: 14px; color: #808080">Git GitHub 分支</a> <a href="/tags/GitHub-同步-fork/" style="font-size: 14px; color: #808080">GitHub 同步 fork</a> <a href="/tags/IE-CSS-兼容性-HTML/" style="font-size: 14px; color: #808080">IE CSS 兼容性 HTML</a> <a href="/tags/JavaScript-Ajax-URL-HistoryApi-pushState-pjax/" style="font-size: 14px; color: #808080">JavaScript Ajax URL HistoryApi pushState pjax</a> <a href="/tags/JavaScript-Array-算法-慕课网/" style="font-size: 14px; color: #808080">JavaScript Array 算法 慕课网</a> <a href="/tags/JavaScript-HTML-CSS-Sass-移动端-XSS-AMD-requireJS-CommonJS-性能优化-WebApp/" style="font-size: 14px; color: #808080">JavaScript HTML CSS Sass 移动端 XSS AMD requireJS CommonJS 性能优化 WebApp</a> <a href="/tags/JavaScript-HTML-CSS-思维导图-技能树/" style="font-size: 14px; color: #808080">JavaScript HTML CSS 思维导图 技能树</a> <a href="/tags/JavaScript-作用域-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 作用域 慕课网 ife</a> <a href="/tags/JavaScript-函数-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 函数 慕课网 ife</a> <a href="/tags/JavaScript-慕课网-this-ife/" style="font-size: 14px; color: #808080">JavaScript 慕课网 this ife</a> <a href="/tags/JavaScript-闭包-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 闭包 慕课网 ife</a> <a href="/tags/JavaScript-面向对象-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 面向对象 慕课网 ife</a> <a href="/tags/Sublime-jshint-csslint/" style="font-size: 14px; color: #808080">Sublime jshint csslint</a> <a href="/tags/Weinre-WebApp-调试工具-JavaScript-HTML-CSS/" style="font-size: 14px; color: #808080">Weinre WebApp 调试工具 JavaScript HTML CSS</a> <a href="/tags/countdown-JavaScript/" style="font-size: 14px; color: #808080">countdown JavaScript</a> <a href="/tags/jekyll-RubyGems/" style="font-size: 14px; color: #808080">jekyll RubyGems</a> <a href="/tags/jekyll-端口-markdown-Foxit-RubyGems-HTML-CSS/" style="font-size: 14px; color: #808080">jekyll 端口 markdown Foxit RubyGems HTML CSS</a> <a href="/tags/tools-CSS-reveal-配色/" style="font-size: 14px; color: #808080">tools CSS reveal 配色</a> <a href="/tags/函数-JavaScript/" style="font-size: 14px; color: #808080">函数 JavaScript</a> <a href="/tags/动画-CSS-airbnb-lottie-JavaScript/" style="font-size: 14px; color: #808080">动画 CSS airbnb lottie JavaScript</a> <a href="/tags/动画-手势/" style="font-size: 14px; color: #808080">动画 手势</a> <a href="/tags/对象-函数-this-闭包-面向对象-作用域/" style="font-size: 14px; color: #808080">对象 函数 this 闭包 面向对象 作用域</a> <a href="/tags/效率-vscode-markdown/" style="font-size: 14px; color: #808080">效率 vscode markdown</a> <a href="/tags/文件-下载-JavaScript/" style="font-size: 14px; color: #808080">文件 下载 JavaScript</a> <a href="/tags/正则-分组-Regular/" style="font-size: 14px; color: #808080">正则 分组 Regular</a> <a href="/tags/算法-shuffle-乱序-洗牌/" style="font-size: 14px; color: #808080">算法 shuffle 乱序 洗牌</a> <a href="/tags/继承-对象-原型-Array-正则/" style="font-size: 14px; color: #808080">继承 对象 原型 Array 正则</a> <a href="/tags/面试-Lenovo-实习-JavaScript/" style="font-size: 14px; color: #808080">面试 Lenovo 实习 JavaScript</a>
+        <a href="/tags/Baidu-ife-HTML-CSS-task/" style="font-size: 14px; color: #808080">Baidu ife HTML CSS task</a> <a href="/tags/Baidu-ife-JavaScript-正则-Regular/" style="font-size: 14px; color: #808080">Baidu ife JavaScript 正则 Regular</a> <a href="/tags/ES2015-ES6-ES5-babel/" style="font-size: 14px; color: #808080">ES2015 ES6 ES5 babel</a> <a href="/tags/GitHub-同步-fork/" style="font-size: 14px; color: #808080">GitHub 同步 fork</a> <a href="/tags/JavaScript-Ajax-URL-HistoryApi-pushState-pjax/" style="font-size: 14px; color: #808080">JavaScript Ajax URL HistoryApi pushState pjax</a> <a href="/tags/JavaScript-Array-算法/" style="font-size: 14px; color: #808080">JavaScript Array 算法</a> <a href="/tags/JavaScript-HTML-CSS-Sass-移动端-XSS-AMD-requireJS-CommonJS-性能优化-WebApp/" style="font-size: 14px; color: #808080">JavaScript HTML CSS Sass 移动端 XSS AMD requireJS CommonJS 性能优化 WebApp</a> <a href="/tags/JavaScript-作用域-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 作用域 慕课网 ife</a> <a href="/tags/JavaScript-函数-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 函数 慕课网 ife</a> <a href="/tags/JavaScript-慕课网-this-ife/" style="font-size: 14px; color: #808080">JavaScript 慕课网 this ife</a> <a href="/tags/JavaScript-闭包-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 闭包 慕课网 ife</a> <a href="/tags/JavaScript-面向对象-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 面向对象 慕课网 ife</a> <a href="/tags/Sublime-jshint-csslint/" style="font-size: 14px; color: #808080">Sublime jshint csslint</a> <a href="/tags/Weinre-WebApp-调试工具-JavaScript-HTML-CSS/" style="font-size: 14px; color: #808080">Weinre WebApp 调试工具 JavaScript HTML CSS</a> <a href="/tags/countdown-JavaScript/" style="font-size: 14px; color: #808080">countdown JavaScript</a> <a href="/tags/tools-CSS-reveal-配色/" style="font-size: 14px; color: #808080">tools CSS reveal 配色</a> <a href="/tags/函数-JavaScript/" style="font-size: 14px; color: #808080">函数 JavaScript</a> <a href="/tags/动画-CSS-airbnb-lottie-JavaScript/" style="font-size: 14px; color: #808080">动画 CSS airbnb lottie JavaScript</a> <a href="/tags/动画-手势/" style="font-size: 14px; color: #808080">动画 手势</a> <a href="/tags/对象-函数-this-闭包-面向对象-作用域/" style="font-size: 14px; color: #808080">对象 函数 this 闭包 面向对象 作用域</a> <a href="/tags/文件-下载-JavaScript/" style="font-size: 14px; color: #808080">文件 下载 JavaScript</a> <a href="/tags/正则-分组-Regular/" style="font-size: 14px; color: #808080">正则 分组 Regular</a> <a href="/tags/算法-shuffle-乱序-洗牌/" style="font-size: 14px; color: #808080">算法 shuffle 乱序 洗牌</a> <a href="/tags/继承-对象-原型-Array-正则/" style="font-size: 14px; color: #808080">继承 对象 原型 Array 正则</a>
     </div>
 </div>
 

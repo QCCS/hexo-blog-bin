@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>qianchaochushui</title>
+  <meta name="description" content="weichat:qianchaochushui">
+  <meta name="keywords" content="Node javascript CSS React Vue">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="shortcut icon" href="/">
+  <link rel="alternate" href="/atom.xml" title="qianchaochushui">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="从零开始编写自己的JavaScript框架（二）#2. 数据绑定 ##2.1 数据绑定的原理 数据绑定是一种很便捷的特性，一些RIA框架带有双向绑定功能，比如Flex和Silverlight，当某个数据发生变更时，所绑定的界面元素也发生变更，当界面元素的值发生变化时，数据也跟着变化，这种功能在处理表单数据的填充和收集时，是非常有用的。 在HTML中，原生是没有这样的功能的，但有些框架做到了，它们是">
+<meta name="keywords" content="Node javascript CSS React Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="qianchaochushui">
+<meta property="og:url" content="https://qccs.github.io/2019/04/14/杂谈/2013-07-10-从零开始编写自己的JavaScript框架（二）/index.html">
+<meta property="og:site_name" content="qianchaochushui">
+<meta property="og:description" content="从零开始编写自己的JavaScript框架（二）#2. 数据绑定 ##2.1 数据绑定的原理 数据绑定是一种很便捷的特性，一些RIA框架带有双向绑定功能，比如Flex和Silverlight，当某个数据发生变更时，所绑定的界面元素也发生变更，当界面元素的值发生变化时，数据也跟着变化，这种功能在处理表单数据的填充和收集时，是非常有用的。 在HTML中，原生是没有这样的功能的，但有些框架做到了，它们是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-14T09:10:49.489Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="qianchaochushui">
+<meta name="twitter:description" content="从零开始编写自己的JavaScript框架（二）#2. 数据绑定 ##2.1 数据绑定的原理 数据绑定是一种很便捷的特性，一些RIA框架带有双向绑定功能，比如Flex和Silverlight，当某个数据发生变更时，所绑定的界面元素也发生变更，当界面元素的值发生变化时，数据也跟着变化，这种功能在处理表单数据的填充和收集时，是非常有用的。 在HTML中，原生是没有这样的功能的，但有些框架做到了，它们是">
+    
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+  <link href="//cdn.bootcss.com/node-waves/0.7.5/waves.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+</head>
+</html>
+<body>
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+
+  <script>setLoadingBarProgress(20)</script> 
+  <header class="l_header">
+	<div class="wrapper">
+		<div class="nav-main container container--flex">
+			<a class="logo flat-box" href="/">
+				qianchaochushui
+			</a>
+			<div class="menu">
+				<ul class="h-list">
+					
+						<li>
+							<a class="flat-box nav-home" href="/">
+								首页
+							</a>
+						</li>
+					
+						<li>
+							<a class="flat-box nav-archives" href="/archives">
+								存档
+							</a>
+						</li>
+					
+						<li>
+							<a class="flat-box nav-categories" href="/categories">
+								分类
+							</a>
+						</li>
+					
+						<li>
+							<a class="flat-box nav-tags" href="/tags">
+								标签
+							</a>
+						</li>
+					
+						<li>
+							<a class="flat-box nav-about" href="/about">
+								关于
+							</a>
+						</li>
+					
+				</ul>
+				<div class="underline"></div>
+			</div>
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="搜索">
+						<span class="icon icon-search"></span>
+					</form>
+				</div>
+			
+			<ul class="switcher h-list">
+				
+					<li class="s-search"><a href="javascript:void(0)"><span class="icon icon-search flat-box"></span></a></li>
+				
+				<li class="s-menu"><a href="javascript:void(0)"><span class="icon icon-menu flat-box"></span></a></li>
+			</ul>
+		</div>
+		
+		<div class="nav-sub container container--flex">
+			<a class="logo" href="javascript:void(0)">
+				Word of Forks
+			</a>
+
+			<ul class="switcher h-list">
+				<li class="s-comment"><a href="javascript:void(0)"><span class="icon icon-chat_bubble_outline flat-box"></span></a></li>
+				<li class="s-top"><a href="javascript:void(0)"><span class="icon icon-arrow_upward flat-box"></span></a></li>
+				<li class="s-toc"><a href="javascript:void(0)"><span class="icon icon-format_list_numbered flat-box"></span></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<aside class="menu-phone">
+	<nav>
+		
+			<a href="/" class="nav-home nav">
+				首页
+			</a>
+		
+			<a href="/archives" class="nav-archives nav">
+				存档
+			</a>
+		
+			<a href="/categories" class="nav-categories nav">
+				分类
+			</a>
+		
+			<a href="/tags" class="nav-tags nav">
+				标签
+			</a>
+		
+			<a href="/about" class="nav-about nav">
+				关于
+			</a>
+		
+	</nav>
+</aside>
+
+    <script>setLoadingBarProgress(40);</script>
+  <div class="l_body">
+    <div class='container clearfix'>
+      <div class='l_main'>
+        <article id="post-杂谈/2013-07-10-从零开始编写自己的JavaScript框架（二）" class="post white-box article-type-post" itemscope itemprop="blogPost">
+	<section class="meta">
+	<h2 class="title">
+  	<a href="/2019/04/14/杂谈/2013-07-10-从零开始编写自己的JavaScript框架（二）/">
+    	
+    </a>
+  </h2>
+	<time>
+	  4月 14, 2019
+	</time>
+	
+	</section>
+	
+		<section class="toc-wrapper"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#从零开始编写自己的JavaScript框架（二）"><span class="toc-number">1.</span> <span class="toc-text">从零开始编写自己的JavaScript框架（二）</span></a></li></ol></section>
+	
+	<section class="article typo">
+  	<div class="article-entry" itemprop="articleBody">
+    	<h1 id="从零开始编写自己的JavaScript框架（二）"><a href="#从零开始编写自己的JavaScript框架（二）" class="headerlink" title="从零开始编写自己的JavaScript框架（二）"></a>从零开始编写自己的JavaScript框架（二）</h1><p>#2. 数据绑定</p>
+<p>##2.1 数据绑定的原理</p>
+<p>数据绑定是一种很便捷的特性，一些RIA框架带有双向绑定功能，比如Flex和Silverlight，当某个数据发生变更时，所绑定的界面元素也发生变更，当界面元素的值发生变化时，数据也跟着变化，这种功能在处理表单数据的填充和收集时，是非常有用的。</p>
+<p>在HTML中，原生是没有这样的功能的，但有些框架做到了，它们是怎么做到的呢？我们来做个简单的试试，顺便探讨一下其中原理。</p>
+<p>先看数据到界面上的的绑定，比如：</p>
+<pre><code>&lt;input vm-value=&quot;name&quot;/&gt;
+var person = {
+    name: &quot;Tom&quot;
+};
+</code></pre><p>如果我们给name重新赋值，person.name = “Jerry”，怎么才能让界面得到变更？<br><a id="more"></a><br>从直觉来说，我们需要在name发生改变的时候，触发一个事件，或者调用某个指定的方法，然后才好着手做后面的事情，比如：</p>
+<pre><code>var person = {
+    name: &quot;Tom&quot;,
+    setName: function(newName) {
+        this.name = newName;
+        //do something
+    }
+};
+</code></pre><p>这样我们可以在setName里面去给input赋值。推而广之，为了使得实体包含的多个属性都可以运作，可以这么做：</p>
+<pre><code>var person = {
+    name: &quot;Tom&quot;,
+    gender: 5
+    set: function(key, value) {
+        this[key] = value;
+        //do something
+    }
+};
+</code></pre><p>或者合并两个方法，只判断是否传了参数：</p>
+<pre><code>Person.prototype.name = function(value) {
+    if (arguments.length == 0) {
+        return this._name;
+    }
+    else {
+        this._name = value;
+    }
+}
+</code></pre><p>这种情况下，赋值的时候就是person.name(“Tom”)，取值的时候就是var name = person.name()了。</p>
+<p>有一些框架是通过这种方式来变通实现数据绑定的，对数据的写入只能通过方法调用。但这种方式很不直接，我们来想点别的办法。</p>
+<p>在C#等一些语言里，有一种东西叫做存取器，比如说：</p>
+<pre><code>class Person
+{
+    private string name;
+
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+        set
+        {
+            name = value;
+        }
+    }
+}
+</code></pre><p>用的时候，person.Name = “Jerry”，就会调用到set里，相当于是个方法。</p>
+<p>这一点非常好，很符合我们的需要，那JavaScript里面有没有类似存取器的特性呢？老早以前是没有的，但现在有了，那就是Object.defineProperty，它的第三个参数就是可选的存取函数。比如说：</p>
+<pre><code>var person = {};
+
+// Add an accessor property to the object.
+Object.defineProperty(person, &quot;name&quot;, {
+    set: function (value) {
+        this._name = value;
+        //do something
+    },
+    get: function () {
+        return this._name;
+    },
+    enumerable: true,
+    configurable: true
+});
+</code></pre><p>赋值的时候，person.name = “Tom”，取值的时候，var name = person.name，简直太美妙了。注意这里define的时候，是定义在实例上的，如果想要定义到类型里面，可以在构造器里面定义。</p>
+<p>现在我们从数据到DOM的绑定可以解决掉了，至少我们能够在变量被更改的时候去做一些自己的事情，比如查找这个属性被绑定到哪些控件了，然后挨个对其赋值。框架怎么知道属性被绑定到哪些控件了呢？这个直接在第二部分的实现过程中讨论。</p>
+<p>再看控件到数据的绑定，这个其实很好理解。无非就是给控件添加change之类的事件监听，在这里面把关联到的数据更新掉。到这里，我们在原理方面已经没有什么问题了，现在开始准备把它写出来。</p>
+<p>##2.2 数据绑定的实现</p>
+<p>我们的框架启动之后，要先把前面所说的这种绑定关系收集起来，这种属性会分布于DOM的各个角落，一个很现实的做法是，递归遍历界面的每个DOM节点，检测该属性，于是我们代码的结构大致如下所示。</p>
+<pre><code>function parseElement(element) {
+    for (var i=0; i&lt;element.attributes.length; i++) {
+        parseAttribute(element.attributes[i]);
+    }
+
+    for (var i=0; i&lt;element.children.length; i++) {
+        parseElement(element.children[i]);
+    }
+}
+</code></pre><p>但是我们这时候面临一个问题，比如你的输入框绑定在name变量上，这个name应该从属于什么？它是全局变量吗？</p>
+<p>我们在开始做这个框架的时候强调了一个原则：业务模块不允许定义全局变量，框架内部也尽量少有全局作用域，到目前为止，我们只暴露了thin一个全局入口，所以在这里不能破坏这个原则。</p>
+<p>因此，我们要求业务开发人员去定义一个视图模型，把变量包装起来，所包装的不限于变量，也可以有方法。比如下面，我们定义了一个实体叫Person，带两个变量，两个方法，后面我们来演示一下怎么把它们绑定到HTML界面。</p>
+<pre><code>thin.define(&quot;Person&quot;, [], function() {
+    function Person() {
+        this.name = &quot;Tom&quot;;
+        this.age = 5;
+    }
+
+    Person.prototype = {
+        growUp: function() {
+            this.age++;
+        }
+    };
+
+    return Person;
+});
+</code></pre><p>模型方面都准备好了，现在来看界面：</p>
+<pre><code>&lt;div vm-model=&quot;Person&quot;&gt;
+    &lt;input type=&quot;text&quot; vm-value=&quot;name&quot;/&gt;
+    &lt;input type=&quot;text&quot; vm-value=&quot;age&quot;/&gt;
+    &lt;input type=&quot;button&quot; vm-click=&quot;growUp&quot; value=&quot;Grow Up&quot;/&gt;
+&lt;/div&gt;
+</code></pre><p>为了使得结构更加容易看，我们把界面的无关属性比如样式之类都去掉了，只留下不能再减少的这么一段。现在我们可以看到，在界面的顶层定义一个vm-model属性，值为实体的名称。两个输入框通过vm-value来绑定到实例属性，vm-init绑定界面的初始化方法，vm-click绑定按钮的点击事件。</p>
+<p>好了，现在我们可以来扫描这个简单的DOM结构了。想要做这么一个绑定，首先要考虑数据从哪里来？在绑定name和code属性之前，毫无疑问，应当先实例化一个Person，我们怎么才能知道需要把Person模块实例化呢？</p>
+<p>当扫描到一个DOM元素的时候，我们要先检测它的vm-model属性，如果有值，就取这个值来实例化，然后，把这个值一直传递下去，在扫描其他属性或者下属DOM元素的时候都带进去。这么一来，parseElement就变成一个递归了，于是它只好有两个参数，变成了这样：</p>
+<pre><code>function parseElement(element, vm) {
+    var model = vm;
+
+    if (element.getAttribute(&quot;vm-model&quot;)) {
+        model = bindModel(element.getAttribute(&quot;vm-model&quot;));
+    }
+
+    for (var i=0; i&lt;element.attributes.length; i++) {
+        parseAttribute(element, element.attributes[i], model);
+    }
+
+    for (var i=0; i&lt;element.children.length; i++) {
+        parseElement(element.children[i], model);
+    }
+}
+</code></pre><p>看看我们打算怎么来实例化这个模型，这个bindModel方法的参数是模块名，于是我们先去use一下，从工厂里生成出来，然后new一下，先这么return出去吧。</p>
+<pre><code>function bindModel(modelName) {
+    thin.log(&quot;model&quot; + modelName);
+
+    var model = thin.use(modelName, true);
+    var instance = new model();
+
+    return instance;
+}
+</code></pre><p>现在我们开始关注parseAttribute函数，可能的attribute有哪些种类呢？我列举了一些很常用的：</p>
+<ul>
+<li>init，用于绑定初始化方法</li>
+<li>click，用于绑定点击</li>
+<li>value，绑定变量</li>
+<li>enable和disable，绑定可用状态</li>
+<li>visible和invisible，绑定可见状态</li>
+</ul>
+<p>然后就可以实现我们parseAttribute函数了：</p>
+<pre><code>function parseAttribute(element, attr, model) {
+    if (attr.name.indexOf(&quot;vm-&quot;) == 0) {
+        var type = attr.name.slice(3);
+
+        switch (type) {
+            case &quot;init&quot;:
+                bindInit(element, attr.value, model);
+                break;
+            case &quot;value&quot;:
+                bindValue(element, attr.value, model);
+                break;
+            case &quot;click&quot;:
+                bindClick(element, attr.value, model);
+                break;
+            case &quot;enable&quot;:
+                bindEnable(element, attr.value, model, true);
+                break;
+            case &quot;disable&quot;:
+                bindEnable(element, attr.value, model, false);
+                break;
+            case &quot;visible&quot;:
+                bindVisible(element, attr.value, model, true);
+                break;
+            case &quot;invisible&quot;:
+                bindVisible(element, attr.value, model, false);
+                break;
+            case &quot;element&quot;:
+                model[attr.value] = element;
+                break;
+        }
+    }
+}
+</code></pre><p>注意到最后还有个element类型，本来可以不要这个，但我们考虑到将来，一切都是组件化的时候，界面上打算不写id，也不依靠选择器，而是用某个标志来定位元素，所以加上了这个，文章最后的示例中使用了它。</p>
+<p>这么多绑定，不打算都讲，用bindValue函数来说明一下吧：</p>
+<pre><code>function bindValue(element, key, vm) {
+    thin.log(&quot;binding value: &quot; + key);
+
+    vm.$watch(key, function (value, oldValue) {
+        element.value = value || &quot;&quot;;
+    });
+
+    element.onkeyup = function () {
+        vm[key] = element.value;
+    };
+
+    element.onpaste = function () {
+        vm[key] = element.value;
+    };
+}
+</code></pre><p>我们假定每个模型实例上带有一个$watch方法，用于监控某变量的变化，可以传入一个监听函数，当变量变化的时候，自动调用这个函数，并且把新旧两个值传回来。</p>
+<p>在这个代码里，我们使用$watch方法给传入的key添加一个监听，监听器里面给监听元素赋值。我们这里偷懒了一下，假定所有的绑定元素都是输入框，所以直接给element.value设置值，为了防止值为空导致显示undefined，把值跟空字符串用短路表达式做了个转换。</p>
+<p>接下来，也对element的几个可能导致值变化的事件进行了监听，在里面把模型上对应的值更新掉。这样双向绑定就做好了。</p>
+<p>然后回头来看$watch的实现。很显然这里也要一个map，我们给它取名为$watchers，存放属性的绑定关系，对于每个属性，它的值需要保存一份，供getter获取，同时还有一个数组，存放了该属性绑定的处理函数。当属性发生变更的时候，去挨个把它们调用一下。</p>
+<pre><code>var Binder = {
+    $watch: function (key, watcher) {
+        if (!this.$watchers[key]) {
+            this.$watchers[key] = {
+                value: this[key],
+                list: []
+            };
+
+            Object.defineProperty(this, key, {
+                set: function (val) {
+                    var oldValue = this.$watchers[key].value;
+                    this.$watchers[key].value = val;
+
+                    for (var i = 0; i &lt; this.$watchers[key].list.length; i++) {
+                        this.$watchers[key].list[i](val, oldValue);
+                    }
+                },
+
+                get: function () {
+                    return this.$watchers[key].value;
+                }
+            });
+        }
+
+        this.$watchers[key].list.push(watcher);
+    }
+};
+</code></pre><p>但是vm怎么就有$watch呢，每个地方都去判断一下非空然后再去创建其实挺麻烦的，所以，这个属性我们可以直接在实例化模型的时候创建出来。</p>
+<pre><code>function bindModel(name) {
+    thin.log(&quot;binding model: &quot; + name);
+
+    var model = thin.use(name, true);
+    var instance = new model().extend(Binder);
+    instance.$watchers = {};
+
+    return instance;
+}
+</code></pre><p>看看这里的写法，为什么$watchers要额外设置，而$watch就可以放在Binder里面来extend呢？</p>
+<p>先解释extend干了什么，它做的是一个对象的浅拷贝，也就是说，把Binder的属性和方法都复制给了创建出来的model实例，注意，这个所谓的复制，如果是简单类型，那确实复制了，如果是引用类型，那复制的其实只是一个引用，所以如果$watchers也放在Binder里，不同的instance就共享一个$watchers，逻辑就是错误的。那为什么$watch又可以放在这里复制呢？因为它是函数，它的this始终指向当前的执行主体，也就是说，如果放在instance1上执行，指向的就是instance1，放在instance2上执行，指向的就是instance2，我们利用这一点，就可以不用让每个实例都创建一份$watch方法，而是共用同一个。</p>
+<p>同理，我们可以把enable，visible，init，click这些都做起来，init的执行时间放在扫描完vm-model那个element之下的所有DOM节点之后。</p>
+<p>嗯，我们是不是可以试一下了？来写个代码：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Simple binding demo&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;binding&quot;&gt;
+    &lt;meta name=&quot;author&quot; content=&quot;xu.fei@outlook.com&quot;&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;../js/thin.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div vm-model=&quot;test.Person&quot;&gt;
+    &lt;input type=&quot;text&quot; vm-value=&quot;name&quot;/&gt;
+    &lt;input type=&quot;text&quot; vm-value=&quot;age&quot;/&gt;
+    &lt;input type=&quot;text&quot; vm-value=&quot;age&quot;/&gt;
+    &lt;input type=&quot;button&quot; vm-click=&quot;growUp&quot; value=&quot;Grow Up&quot;/&gt;
+&lt;/div&gt;
+
+&lt;div vm-model=&quot;test.Person&quot; vm-init=&quot;init&quot;&gt;
+    &lt;input type=&quot;text&quot; vm-value=&quot;name&quot;/&gt;
+    &lt;input type=&quot;text&quot; vm-value=&quot;age&quot;/&gt;
+    &lt;input type=&quot;button&quot; vm-click=&quot;growUp&quot; value=&quot;Grow Up&quot;/&gt;
+&lt;/div&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    thin.define(&quot;test.Person&quot;, [], function () {
+        function Person() {
+            this.name = &quot;Tom&quot;;
+            this.age = 5;
+        }
+
+        Person.prototype = {
+            init: function () {
+                this.name = &quot;Jerry&quot;;
+                this.age = 3;
+            },
+
+            growUp: function () {
+                this.age++;
+            }
+        };
+
+        return Person;
+    });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>或者访问这里：<a href="http://xufei.github.io/thin/demo/simple-binding.html" target="_blank" rel="noopener">http://xufei.github.io/thin/demo/simple-binding.html</a></p>
+<p>以刚才文章提到的内容，还不能完全解释这个例子的效果，因为没看到在哪里调用parseElement的。说来也简单，就在thin.js里面，直接写了一个thin.ready，在那边调用了这个函数，去解析了document.body，于是测试页面里面才可以只写绑定和视图模型。</p>
+<p>我们还有一个更实际一点的例子，结合了另外一个系列里面写的简单DataGrid控件，做了一个很基础的人员管理界面：<a href="http://xufei.github.io/thin/demo/binding.html" target="_blank" rel="noopener">http://xufei.github.io/thin/demo/binding.html</a></p>
+<p>##2.3 小结</p>
+<p>到此为止，我们的绑定框架勉强能够运行起来了！虽然很简陋，而且要比较新的浏览器才能跑，但毕竟是跑起来了。</p>
+
+  	</div>
+	  
+		
+	
+		<div class="art-item-footer">
+				
+					<span class="art-item-left"><i class="icon icon-chevron-thin-left"></i>prev：<a href="/2019/04/14/杂谈/2013-01-14-前端开发技术的发展/" rel="prev" title>
+						 
+					</a></span>
+				
+				
+					<span class="art-item-right">next：<a href="/2019/04/14/杂谈/2013-10-01-企业软件领域前端开发的困境/" rel="next" title>
+						
+					</a><i class="icon icon-chevron-thin-right"></i></span>
+				
+		</div>
+	
+	</section>
+	
+</article>
+<script>
+	window.subData = {
+		title: '',
+		tools: true
+	}
+</script>
+
+      </div>
+      <aside class='l_side'>
+        
+  <section class="m_widget about">
+
+<img class="avatar waves-image" src="https://avatars3.githubusercontent.com/u/13073380?s=460&amp;v=4">
+
+<div class="header">zhouli</div>
+<div class="content">
+<div class="desc">weichat:qianchaochushui</div>
+</div>
+</section>
+
+  <section class="m_widget links">
+<div class="header">友情链接</div>
+<div class="content">
+    <ul class="entry">
+    
+        <li><a class="flat-box" target="_blank" href="https://finance.json119.com">
+            <div class="name">finance</div>
+        </a></li>
+    
+        <li><a class="flat-box" target="_blank" href="https://json119.com/">
+            <div class="name">json119</div>
+        </a></li>
+    
+    </ul>
+</div>
+</section>
+
+  <section class="m_widget categories">
+<div class="header">分类</div>
+<div class="content">
+    
+    <ul class="entry">
+    
+        <li><a class="flat-box" href="/categories/GitHub/"><div class="name">GitHub</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/HTML-CSS/"><div class="name">HTML CSS</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/JavaScript/"><div class="name">JavaScript</div><div class="badget">20</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/Sublime/"><div class="name">Sublime</div><div class="badget">1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/Tools/"><div class="name">Tools</div><div class="badget">1</div></a></li>
+    
+    </ul>
+    
+</div>
+</section>
+
+  
+<div class="m_widget tagcloud">
+    <div class="header">标签</div>
+    <div class="content">
+        <a href="/tags/Baidu-ife-HTML-CSS-task/" style="font-size: 14px; color: #808080">Baidu ife HTML CSS task</a> <a href="/tags/Baidu-ife-JavaScript-正则-Regular/" style="font-size: 14px; color: #808080">Baidu ife JavaScript 正则 Regular</a> <a href="/tags/ES2015-ES6-ES5-babel/" style="font-size: 14px; color: #808080">ES2015 ES6 ES5 babel</a> <a href="/tags/GitHub-同步-fork/" style="font-size: 14px; color: #808080">GitHub 同步 fork</a> <a href="/tags/JavaScript-Ajax-URL-HistoryApi-pushState-pjax/" style="font-size: 14px; color: #808080">JavaScript Ajax URL HistoryApi pushState pjax</a> <a href="/tags/JavaScript-Array-算法/" style="font-size: 14px; color: #808080">JavaScript Array 算法</a> <a href="/tags/JavaScript-HTML-CSS-Sass-移动端-XSS-AMD-requireJS-CommonJS-性能优化-WebApp/" style="font-size: 14px; color: #808080">JavaScript HTML CSS Sass 移动端 XSS AMD requireJS CommonJS 性能优化 WebApp</a> <a href="/tags/JavaScript-作用域-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 作用域 慕课网 ife</a> <a href="/tags/JavaScript-函数-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 函数 慕课网 ife</a> <a href="/tags/JavaScript-慕课网-this-ife/" style="font-size: 14px; color: #808080">JavaScript 慕课网 this ife</a> <a href="/tags/JavaScript-闭包-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 闭包 慕课网 ife</a> <a href="/tags/JavaScript-面向对象-慕课网-ife/" style="font-size: 14px; color: #808080">JavaScript 面向对象 慕课网 ife</a> <a href="/tags/Sublime-jshint-csslint/" style="font-size: 14px; color: #808080">Sublime jshint csslint</a> <a href="/tags/Weinre-WebApp-调试工具-JavaScript-HTML-CSS/" style="font-size: 14px; color: #808080">Weinre WebApp 调试工具 JavaScript HTML CSS</a> <a href="/tags/countdown-JavaScript/" style="font-size: 14px; color: #808080">countdown JavaScript</a> <a href="/tags/tools-CSS-reveal-配色/" style="font-size: 14px; color: #808080">tools CSS reveal 配色</a> <a href="/tags/函数-JavaScript/" style="font-size: 14px; color: #808080">函数 JavaScript</a> <a href="/tags/动画-CSS-airbnb-lottie-JavaScript/" style="font-size: 14px; color: #808080">动画 CSS airbnb lottie JavaScript</a> <a href="/tags/动画-手势/" style="font-size: 14px; color: #808080">动画 手势</a> <a href="/tags/对象-函数-this-闭包-面向对象-作用域/" style="font-size: 14px; color: #808080">对象 函数 this 闭包 面向对象 作用域</a> <a href="/tags/文件-下载-JavaScript/" style="font-size: 14px; color: #808080">文件 下载 JavaScript</a> <a href="/tags/正则-分组-Regular/" style="font-size: 14px; color: #808080">正则 分组 Regular</a> <a href="/tags/算法-shuffle-乱序-洗牌/" style="font-size: 14px; color: #808080">算法 shuffle 乱序 洗牌</a> <a href="/tags/继承-对象-原型-Array-正则/" style="font-size: 14px; color: #808080">继承 对象 原型 Array 正则</a>
+    </div>
+</div>
+
+
+
+      </aside>
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+  </div>
+  <footer id="footer" class="clearfix">
+
+	<div class="social-wrapper">
+  	
+      
+        <a href="https://github.com/qccs" class="social github" target="_blank" rel="external">
+          <span class="icon icon-github"></span>
+        </a>
+      
+        <a href="https://finance.json119.com" class="social vcard" target="_blank" rel="external">
+          <span class="icon icon-vcard"></span>
+        </a>
+      
+        <a href="/atom.xml" class="social rss" target="_blank" rel="external">
+          <span class="icon icon-rss"></span>
+        </a>
+      
+    
+  </div>
+    <style>
+        .aaa{
+            text-align: center;
+        }
+    </style>
+    <div class="aaa">
+        <a href="https://info.flagcounter.com/fv6m"><img src="https://s11.flagcounter.com/count2/fv6m/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">渝ICP备16001049号</a></div>
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2f089ce8c3df6466fce313abefd662c3";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+
+
+    </script>
+</footer>
+
+
+  <script>setLoadingBarProgress(80);</script>
+  
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/node-waves/0.7.5/waves.min.js"></script>
+<script src="//cdn.bootcss.com/scrollReveal.js/3.3.2/scrollreveal.min.js"></script>
+<script src="/js/jquery.fitvids.js"></script>
+<script>
+	var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+	var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+	var ALGOLIA_API_KEY = "";
+	var ALGOLIA_APP_ID = "";
+	var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var BAIDU_API_ID = "";
+  var SEARCH_SERVICE = "hexo";
+  var ROOT = "/"||"/";
+  if(!ROOT.endsWith('/'))ROOT += '/';
+</script>
+<script src="/js/search.js"></script>
+<script src="/js/app.js"></script>
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
