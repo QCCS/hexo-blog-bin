@@ -161,14 +161,36 @@
 		
   </section>
   <section class="article typo">
-	  <h1 id="Web应用的组件化开发（一）"><a href="#Web应用的组件化开发（一）" class="headerlink" title="Web应用的组件化开发（一）"></a>Web应用的组件化开发（一）</h1><h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>#1. 为什么要做组件化？</p>
-<p>无论前端也好，后端也好，都是整个软件体系的一部分。软件产品也是产品，它的研发过程也必然是有其目的。绝大多数软件产品是追逐利润的，在产品目标确定的情况下，成本有两个途径来优化：减少部署成本，提高开发效率。</p>
-<p>减少部署成本的方面，业界研究得非常多，比如近几年很流行的“去IOE”，就是很典型的，从一些费用较高的高性能产品迁移到开源的易替换的产品集群，又比如使用Linux + Mono来部署.net应用，避开Windows Server的费用。</p>
-<p>提高开发效率这方面，业界研究得更多，主要途径有两点：加快开发速度，减少变更代价。怎样才能加快开发速度呢？如果我们的开发不是重新造轮子，而是每一次做新产品都可以利用已有的东西，那就会好很多。怎样才能减少变更代价呢？如果我们能够理清模块之间的关系，合理分层，每次变更只需要修改其中某个部分，甚至不需要修改代码，仅仅是改变配置就可以，那就更好了。<br>
+	  <h1 id="为什么企业应用这么“钟情”于IE6"><a href="#为什么企业应用这么“钟情”于IE6" class="headerlink" title="为什么企业应用这么“钟情”于IE6"></a>为什么企业应用这么“钟情”于IE6</h1><p>企业内部的信息化，很多起步都很早，但B/S化基本都是从2000年以后开始的，之前有各种客户端，比如基本的Win32 API开发，或者Delphi体系（VCL等，C++ Builder也算在内），微软的几个封装化的体系（ATL，MFC，还有昙花一现的JFC），Java体系（AWT、Swing，SWT等），这些技术本身都比较成熟，IDE的支持也不错，但最终，很大一部分迁移到Web上了。</p>
+<p>迁移到Web的最直接因素是部署成本，B/S架构有天然的部署优势，无需分发，这一点人所共知，但另外还有个重要因素是开发成本。很多人对这一点不相信，为什么呢，因为现在前端码农也不便宜啊，怎么就他降低开发成本了？<br>
 
     
 	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2013-11-20-Web应用的组件化开发（一）/">Read More</a>
+      <a href="/2019/04/13/杂谈/2014-01-20-为什么企业应用这么“钟情”于IE6/">Read More</a>
+    </div>
+    
+    
+    
+  </p></section>
+</article>
+    </div>
+  
+    <div class="post-wrapper">
+      <article class="post revealno-title">
+  <section class="meta">
+    
+    <time>
+      4月 13, 2019
+    </time>
+		
+  </section>
+  <section class="article typo">
+	  <h1 id="Web应用的组件化开发（二）"><a href="#Web应用的组件化开发（二）" class="headerlink" title="Web应用的组件化开发（二）"></a>Web应用的组件化开发（二）</h1><h2 id="管控平台"><a href="#管控平台" class="headerlink" title="管控平台"></a>管控平台</h2><p>在上一篇中我们提到了组件化的大致思路，这一篇主要讲述在这么做之后，我们需要哪些外围手段去管控整个开发过程。从各种角度看，面对较大规模前端开发团队，都有必要建立这么一个开发阶段的协作平台。</p>
+<p>在这个平台上，我们要做哪些事情呢？<br>
+
+    
+	  <div class="readmore">
+      <a href="/2019/04/13/杂谈/2013-12-09-Web应用的组件化（二）/">Read More</a>
     </div>
     
     
@@ -196,33 +218,6 @@
     
 	  <div class="readmore">
       <a href="/2019/04/13/杂谈/2014-04-27-基于AngularJS的企业软件前端架构/">Read More</a>
-    </div>
-    
-    
-    
-  </p></section>
-</article>
-    </div>
-  
-    <div class="post-wrapper">
-      <article class="post revealno-title">
-  <section class="meta">
-    
-    <time>
-      4月 13, 2019
-    </time>
-		
-  </section>
-  <section class="article typo">
-	  <h1 id="前端MV-框架的意义"><a href="#前端MV-框架的意义" class="headerlink" title="前端MV*框架的意义"></a>前端MV*框架的意义</h1><p>经常有人质疑，在前端搞MV<em>有什么意义？也有人提出这样的疑问：以AngularJS，Knockout，BackBone为代表的MV</em>框架，它跟jQuery这样的框架有什么区别？我jQuery用得好好的，有什么必要再引入这种框架？</p>
-<p>回答这些问题之前，先要理清一些历史，前端从什么时候开始有框架的？</p>
-<p>早期前端都是比较简单，基本以页面为工作单元，内容以浏览型为主，也偶尔有简单的表单操作，这个时期每个界面上只有很少的JavaScript逻辑，基本不太需要框架。随着AJAX的出现，Web2.0的兴起，人们可以在页面上可以做比较复杂的事情了，然后前端框架才真正出现了，以jQuery为代表，针对界面上常见的DOM操作，远程请求，数据处理等作了封装，也有专注于处理数据的Underscore，严格来说，这些都不能算框架，而是算库。</p>
-<p>库和框架是有一些区别的：库是一种工具，我提供了，你可以不用，即使你用了，也没影响你自己的代码结构。框架则是面向一个领域，提供一套解决方案，如果你用我，就得按照我的方式办事。按照这个定义，jQuery和Underscore都只能算是库，ExtJS和dojo算框架。</p>
-<p>MV*框架又是为什么兴起的呢？它的出现，伴随着一些Web产品逐渐往应用方向发展，遇到了在C/S领域相同的问题：由于前端功能的增强、代码的膨胀，导致不得不做“前端的架构”这个事情了。<br>
-
-    
-	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2013-10-22-前端MV☆框架的意义/">Read More</a>
     </div>
     
     
@@ -307,12 +302,41 @@ p.add(b);
 		
   </section>
   <section class="article typo">
-	  <h1 id="Web应用的组件化开发（二）"><a href="#Web应用的组件化开发（二）" class="headerlink" title="Web应用的组件化开发（二）"></a>Web应用的组件化开发（二）</h1><h2 id="管控平台"><a href="#管控平台" class="headerlink" title="管控平台"></a>管控平台</h2><p>在上一篇中我们提到了组件化的大致思路，这一篇主要讲述在这么做之后，我们需要哪些外围手段去管控整个开发过程。从各种角度看，面对较大规模前端开发团队，都有必要建立这么一个开发阶段的协作平台。</p>
-<p>在这个平台上，我们要做哪些事情呢？<br>
+	  <h1 id="前端MV-框架的意义"><a href="#前端MV-框架的意义" class="headerlink" title="前端MV*框架的意义"></a>前端MV*框架的意义</h1><p>经常有人质疑，在前端搞MV<em>有什么意义？也有人提出这样的疑问：以AngularJS，Knockout，BackBone为代表的MV</em>框架，它跟jQuery这样的框架有什么区别？我jQuery用得好好的，有什么必要再引入这种框架？</p>
+<p>回答这些问题之前，先要理清一些历史，前端从什么时候开始有框架的？</p>
+<p>早期前端都是比较简单，基本以页面为工作单元，内容以浏览型为主，也偶尔有简单的表单操作，这个时期每个界面上只有很少的JavaScript逻辑，基本不太需要框架。随着AJAX的出现，Web2.0的兴起，人们可以在页面上可以做比较复杂的事情了，然后前端框架才真正出现了，以jQuery为代表，针对界面上常见的DOM操作，远程请求，数据处理等作了封装，也有专注于处理数据的Underscore，严格来说，这些都不能算框架，而是算库。</p>
+<p>库和框架是有一些区别的：库是一种工具，我提供了，你可以不用，即使你用了，也没影响你自己的代码结构。框架则是面向一个领域，提供一套解决方案，如果你用我，就得按照我的方式办事。按照这个定义，jQuery和Underscore都只能算是库，ExtJS和dojo算框架。</p>
+<p>MV*框架又是为什么兴起的呢？它的出现，伴随着一些Web产品逐渐往应用方向发展，遇到了在C/S领域相同的问题：由于前端功能的增强、代码的膨胀，导致不得不做“前端的架构”这个事情了。<br>
 
     
 	  <div class="readmore">
-      <a href="/2019/04/13/杂谈/2013-12-09-Web应用的组件化（二）/">Read More</a>
+      <a href="/2019/04/13/杂谈/2013-10-22-前端MV☆框架的意义/">Read More</a>
+    </div>
+    
+    
+    
+  </p></section>
+</article>
+    </div>
+  
+    <div class="post-wrapper">
+      <article class="post revealno-title">
+  <section class="meta">
+    
+    <time>
+      4月 13, 2019
+    </time>
+		
+  </section>
+  <section class="article typo">
+	  <h1 id="Web应用的组件化开发（一）"><a href="#Web应用的组件化开发（一）" class="headerlink" title="Web应用的组件化开发（一）"></a>Web应用的组件化开发（一）</h1><h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>#1. 为什么要做组件化？</p>
+<p>无论前端也好，后端也好，都是整个软件体系的一部分。软件产品也是产品，它的研发过程也必然是有其目的。绝大多数软件产品是追逐利润的，在产品目标确定的情况下，成本有两个途径来优化：减少部署成本，提高开发效率。</p>
+<p>减少部署成本的方面，业界研究得非常多，比如近几年很流行的“去IOE”，就是很典型的，从一些费用较高的高性能产品迁移到开源的易替换的产品集群，又比如使用Linux + Mono来部署.net应用，避开Windows Server的费用。</p>
+<p>提高开发效率这方面，业界研究得更多，主要途径有两点：加快开发速度，减少变更代价。怎样才能加快开发速度呢？如果我们的开发不是重新造轮子，而是每一次做新产品都可以利用已有的东西，那就会好很多。怎样才能减少变更代价呢？如果我们能够理清模块之间的关系，合理分层，每次变更只需要修改其中某个部分，甚至不需要修改代码，仅仅是改变配置就可以，那就更好了。<br>
+
+    
+	  <div class="readmore">
+      <a href="/2019/04/13/杂谈/2013-11-20-Web应用的组件化开发（一）/">Read More</a>
     </div>
     
     
@@ -352,59 +376,6 @@ p.add(b);
     
     
   </p></section>
-</article>
-    </div>
-  
-    <div class="post-wrapper">
-      <article class="post revealno-title">
-  <section class="meta">
-    
-    <time>
-      4月 13, 2019
-    </time>
-		
-  </section>
-  <section class="article typo">
-	  <h1 id="JavaScript专题之偏函数"><a href="#JavaScript专题之偏函数" class="headerlink" title="JavaScript专题之偏函数"></a>JavaScript专题之偏函数</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>维基百科中对偏函数 (Partial application) 的定义为：</p>
-<blockquote>
-<p>In computer science, partial application (or partial function application) refers to the process of fixing a number of arguments to a function, producing another function of smaller arity. </p>
-</blockquote>
-<p>翻译成中文：</p>
-<p>在计算机科学中，局部应用是指固定一个函数的一些参数，然后产生另一个更小元的函数。</p>
-<p>什么是元？元是指函数参数的个数，比如一个带有两个参数的函数被称为二元函数。</p>
-<p>举个简单的例子：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行 add 函数，一次传入两个参数即可</span></span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设有一个 partial 函数可以做到局部应用</span></span><br><span class="line"><span class="keyword">var</span> addOne = partial(add, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">addOne(<span class="number">2</span>) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
-<p>个人觉得翻译成“局部应用”或许更贴切些，以下全部使用“局部应用”。</p>
-<h2 id="柯里化与局部应用"><a href="#柯里化与局部应用" class="headerlink" title="柯里化与局部应用"></a>柯里化与局部应用</h2><p>如果看过上一篇文章<a href="https://github.com/mqyqingfeng/Blog/issues/42" target="_blank" rel="noopener">《JavaScript专题之柯里化》</a>，实际上你会发现这个例子和柯里化太像了，所以两者到底是有什么区别呢？</p>
-<p>其实也很明显：</p>
-<p>柯里化是将一个多参数函数转换成多个单参数函数，也就是将一个 n 元函数转换成 n 个一元函数。</p>
-<p>局部应用则是固定一个函数的一个或者多个参数，也就是将一个 n 元函数转换成一个 n - x 元函数。</p>
-<p>如果说两者有什么关系的话，引用 <a href="https://github.com/hemanth/functional-programming-jargon#partial-application" target="_blank" rel="noopener">functional-programming-jargon</a> 中的描述就是：</p>
-<blockquote>
-<p> Curried functions are automatically partially applied.</p>
-</blockquote>
-<h2 id="partial"><a href="#partial" class="headerlink" title="partial"></a>partial</h2><p>我们今天的目的是模仿 underscore 写一个 partial 函数，比起 curry 函数，这个显然简单了很多。</p>
-<p>也许你在想我们可以直接使用 bind 呐，举个例子：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> addOne = add.bind(<span class="literal">null</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">addOne(<span class="number">2</span>) <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
-<p>然而使用 bind 我们还是改变了 this 指向，我们要写一个不改变 this 指向的方法。</p>
-<h2 id="第一版"><a href="#第一版" class="headerlink" title="第一版"></a>第一版</h2><p>根据之前的表述，我们可以尝试着写出第一版：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第一版</span></span><br><span class="line"><span class="comment">// 似曾相识的代码</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">partial</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> args = [].slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> newArgs = args.concat([].slice.call(<span class="built_in">arguments</span>));</span><br><span class="line">        <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, newArgs);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>我们来写个 demo 验证下 this 的指向：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b + <span class="keyword">this</span>.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// var addOne = add.bind(null, 1);</span></span><br><span class="line"><span class="keyword">var</span> addOne = partial(add, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> value = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    value: <span class="number">2</span>,</span><br><span class="line">    addOne: addOne</span><br><span class="line">&#125;</span><br><span class="line">obj.addOne(<span class="number">2</span>); <span class="comment">// ???</span></span><br><span class="line"><span class="comment">// 使用 bind 时，结果为 4</span></span><br><span class="line"><span class="comment">// 使用 partial 时，结果为 5</span></span><br></pre></td></tr></table></figure>
-<h2 id="第二版"><a href="#第二版" class="headerlink" title="第二版"></a>第二版</h2><p>然而正如 curry 函数可以使用占位符一样，我们希望 partial 函数也可以实现这个功能，我们再来写第二版：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第二版</span></span><br><span class="line"><span class="keyword">var</span> _ = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">partial</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> args = [].slice.call(<span class="built_in">arguments</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> position = <span class="number">0</span>, len = args.length;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            args[i] = args[i] === _ ? <span class="built_in">arguments</span>[position++] : args[i]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(position &lt; <span class="built_in">arguments</span>.length) args.push(argumetns[position++]);</span><br><span class="line">        <span class="keyword">return</span> fn.apply(<span class="keyword">this</span>, args);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>我们验证一下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> subtract = <span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123; <span class="keyword">return</span> b - a; &#125;;</span><br><span class="line">subFrom20 = partial(subtract, _, <span class="number">20</span>);</span><br><span class="line">subFrom20(<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>值得注意的是：underscore 和 lodash 都提供了 partial 函数，但只有 lodash 提供了 curry 函数。</p>
-<h2 id="专题系列"><a href="#专题系列" class="headerlink" title="专题系列"></a>专题系列</h2><p>JavaScript专题系列目录地址：<a href="https://github.com/mqyqingfeng/Blog" target="_blank" rel="noopener">https://github.com/mqyqingfeng/Blog</a>。</p>
-<p>JavaScript专题系列预计写二十篇左右，主要研究日常开发中一些功能点的实现，比如防抖、节流、去重、类型判断、拷贝、最值、扁平、柯里、递归、乱序、排序等，特点是研(chao)究(xi) underscore 和 jQuery 的实现方式。</p>
-<p>如果有错误或者不严谨的地方，请务必给予指正，十分感谢。如果喜欢或者有所启发，欢迎 star，对作者也是一种鼓励。</p>
-
-
-    
-    
-    
-  </section>
 </article>
     </div>
   
